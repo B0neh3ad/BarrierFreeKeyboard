@@ -5,3 +5,5 @@
 + Android Studio
 + Kotlin
 + Layout: xml
+
+참고: https://in-idea.tistory.com/2?category=853918
