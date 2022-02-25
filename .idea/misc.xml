@@ -3,7 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/aac_item.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/emoji_item.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_aac.xml" value="0.1638655462184874" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_action.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_chunjiin.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_default.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_emoji.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_item.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_numpad.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_symbols.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_symbos.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_view.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/setting_header.xml" value="0.22" />
       </map>
     </option>
   </component>
