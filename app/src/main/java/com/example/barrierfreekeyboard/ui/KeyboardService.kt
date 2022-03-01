@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.example.barrierfreekeyboard.R
-import com.example.barrierfreekeyboard.keyboardview.*
 import com.example.barrierfreekeyboard.ui.keyboardview.*
 
 class KeyboardService: InputMethodService() {
