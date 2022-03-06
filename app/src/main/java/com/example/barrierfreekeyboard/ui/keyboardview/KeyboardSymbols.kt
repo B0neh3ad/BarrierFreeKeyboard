@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.media.AudioManager
 import android.os.*
+import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -14,12 +15,17 @@ import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
 
-class KeyboardSymbols constructor(var context: Context, var layoutInflater: LayoutInflater, var keyboardInteractionListener: KeyboardInteractionListener) {
+class KeyboardSymbols(
+    context: Context,
+    layoutInflater: LayoutInflater,
+    keyboardInteractionListener: KeyboardInteractionListener
+) : Keyboard(context, layoutInflater, keyboardInteractionListener) {
     lateinit var symbolsLayout: LinearLayout
     var inputConnection: InputConnection? = null
 
@@ -45,8 +51,8 @@ class KeyboardSymbols constructor(var context: Context, var layoutInflater: Layo
     private var capsView: ImageView? = null
 
     /** init keyboard **/
-    fun init(){
-        symbolsLayout = layoutInflater.inflate(R.layout.keyboard_symbols, null) as LinearLayout
+    override fun init(){
+        symbolsLayout = layoutInflater.inflate(R.layout.keyboard_default, null) as LinearLayout
         inputConnection = inputConnection
         keyboardInteractionListener = keyboardInteractionListener
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -64,20 +70,24 @@ class KeyboardSymbols constructor(var context: Context, var layoutInflater: Layo
         vibrate = sharedPreferences.getInt("keyboardVibrate", -1)
 
         val lines = arrayOfNulls<LinearLayout>(5)
-        val lineViewsId = listOf(R.id.numpad_line, R.id.first_line, R.id.second_line, R.id.third_line, R.id.fourth_line)
 
         // init LinearLayout in each line
-        for(i in lines.indices){
-            lines[i] = symbolsLayout.findViewById(lineViewsId[i])
+        for(i in 0..4){
+            val row = LinearLayout(context)
+            row.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (50f).toDips(), 1f)
+            row.id = View.generateViewId()
+            if(i == 2){
+                row.setPadding((12f).toDips(), 0, (12f).toDips(), 0)
+            }
+            symbolsLayout.addView(row)
+            lines[i] = row
         }
 
         // Set height in both landscape and portrait
-        var heightRate = 1.0
         if(config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            heightRate = 0.7
-        }
-        for(i in 1..3){
-            lines[i]!!.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (height * heightRate).toInt())
+            for(i in 1..3){
+                lines[i]!!.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (height * 0.7).toInt())
+            }
         }
 
         // init key text
@@ -95,7 +105,7 @@ class KeyboardSymbols constructor(var context: Context, var layoutInflater: Layo
         setLayoutComponents()
     }
 
-    fun getLayout(): LinearLayout {
+    override fun getLayout(): LinearLayout {
         return symbolsLayout
     }
 
@@ -238,55 +248,73 @@ class KeyboardSymbols constructor(var context: Context, var layoutInflater: Layo
     @SuppressLint("ClickableViewAccessibility")
     private fun setLayoutComponents(){
         for(line in layoutLines.indices){
-            val children = layoutLines[line].children.toList()
             val myText = myKeysText[line]
 
-            for(item in children.indices){
-                val actionButton = children[item].findViewById<Button>(R.id.key_button)
-                val specialKey = children[item].findViewById<ImageView>(R.id.special_key)
+            for(item in myText.indices){
+                val myKey = layoutInflater.inflate(R.layout.keyboard_item, null) as ConstraintLayout
+                myKey.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1f)
+                myKey.id = View.generateViewId()
+                val actionButton = myKey.findViewById<Button>(R.id.key_button)
+                val specialKey = myKey.findViewById<ImageView>(R.id.special_key)
                 var myOnClickListener: View.OnClickListener?
 
-                // variables about special key
-                val specialKeyText = listOf("space", "DEL", "CAPS", "Enter")
-                val specialKeyImageResources = listOf(
-                    R.drawable.ic_space_bar, R.drawable.del, R.drawable.ic_caps_unlock, R.drawable.ic_enter
-                )
-                val specialKeyOnClickListener = listOf(
-                    getSpaceAction(), getDeleteAction(), getCapsAction(), getEnterAction()
-                )
-
                 // bind each string(image) and actions with each key
-                if(specialKeyText.indexOf(myText[item]) != -1){
-                    val idx = specialKeyText.indexOf(myText[item])
-                    specialKey.setImageResource(specialKeyImageResources[idx])
-                    specialKey.visibility = View.VISIBLE
-                    actionButton.visibility = View.GONE
-                    myOnClickListener = specialKeyOnClickListener[idx]
-                    specialKey.setOnClickListener(myOnClickListener)
-                    specialKey.setOnTouchListener(getOnTouchListener(myOnClickListener))
-
-                    when(idx){
-                        0 -> {
-                            specialKey.setBackgroundResource(R.drawable.key_background)
-                        }
-                        1 -> {}
-                        2 -> {
-                            specialKey.setBackgroundResource(R.drawable.key_background)
-                            capsView = specialKey
-                        }
-                        3 -> {
-                            specialKey.setBackgroundResource(R.drawable.key_background)
-                        }
-                        else -> {}
+                when(myText[item]){
+                    "space" -> {
+                        myOnClickListener = getSpaceAction()
+                        specialKey.setOnClickListener(myOnClickListener)
+                        specialKey.setImageResource(R.drawable.ic_space_bar)
+                        specialKey.visibility = View.VISIBLE
+                        actionButton.visibility = View.GONE
+                        specialKey.setOnTouchListener(getOnTouchListener(myOnClickListener))
+                        specialKey.setBackgroundResource(R.drawable.key_background)
+                        myKey.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 4f)
+                    }
+                    "DEL" -> {
+                        myOnClickListener = getDeleteAction()
+                        specialKey.setOnClickListener(myOnClickListener)
+                        specialKey.setImageResource(R.drawable.del)
+                        specialKey.visibility = View.VISIBLE
+                        actionButton.visibility = View.GONE
+                        specialKey.setOnTouchListener(getOnTouchListener(myOnClickListener))
+                        myKey.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.7f)
+                    }
+                    "CAPS" -> {
+                        myOnClickListener = getCapsAction()
+                        specialKey.setOnClickListener(myOnClickListener)
+                        specialKey.setImageResource(R.drawable.ic_caps_unlock)
+                        specialKey.visibility = View.VISIBLE
+                        actionButton.visibility = View.GONE
+                        specialKey.setOnTouchListener(getOnTouchListener(myOnClickListener))
+                        specialKey.setBackgroundResource(R.drawable.key_background)
+                        capsView = specialKey
+                        myKey.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.5f)
+                    }
+                    "Enter" -> {
+                        myOnClickListener = getEnterAction()
+                        specialKey.setOnClickListener(myOnClickListener)
+                        specialKey.setImageResource(R.drawable.ic_enter)
+                        specialKey.visibility = View.VISIBLE
+                        actionButton.visibility = View.GONE
+                        specialKey.setOnTouchListener(getOnTouchListener(myOnClickListener))
+                        specialKey.setBackgroundResource(R.drawable.key_background)
+                    }
+                    "한/영" -> {
+                        actionButton.text = myText[item]
+                        buttons.add(actionButton)
+                        myOnClickListener = getMyClickListener(actionButton)
+                        actionButton.setOnTouchListener(getOnTouchListener(myOnClickListener))
+                    }
+                    else -> {
+                        actionButton.text = myText[item]
+                        actionButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                        buttons.add(actionButton)
+                        myOnClickListener = getMyClickListener(actionButton)
+                        actionButton.setOnTouchListener(getOnTouchListener(myOnClickListener))
                     }
                 }
-                else {
-                    actionButton.text = myText[item]
-                    buttons.add(actionButton)
-                    myOnClickListener = getMyClickListener(actionButton)
-                    actionButton.setOnTouchListener(getOnTouchListener(myOnClickListener))
-                }
-                children[item].setOnClickListener(myOnClickListener)
+                myKey.setOnClickListener(myOnClickListener)
+                layoutLines[line].addView(myKey)
             }
         }
     }

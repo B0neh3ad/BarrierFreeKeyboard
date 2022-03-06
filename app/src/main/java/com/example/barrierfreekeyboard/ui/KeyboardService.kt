@@ -33,18 +33,17 @@ class KeyboardService: InputMethodService() {
         override fun modechange(mode: Int) {
             currentInputConnection.finishComposingText()
             keyboardFrame.removeAllViews()
-            if(mode >= MainActivity.KB_ENG && mode <= MainActivity.KB_EMO){
-                lastMode = mode
-            }
             when(mode){
                 MainActivity.KB_ENG -> {
                     // Qwerty
+                    lastMode = mode
                     keyboardEnglish.inputConnection = currentInputConnection
                     keyboardFrame.addView(keyboardEnglish.getLayout())
                 }
                 MainActivity.KB_KOR -> {
                     if(isQwerty == 0){
                         // Qwerty
+                        lastMode = mode
                         keyboardKorean.inputConnection = currentInputConnection
                         keyboardFrame.addView(keyboardKorean.getLayout())
                     }
@@ -54,12 +53,19 @@ class KeyboardService: InputMethodService() {
                     }
                 }
                 MainActivity.KB_SYM -> {
+                    lastMode = mode
                     keyboardSymbols.inputConnection = currentInputConnection
                     keyboardFrame.addView(keyboardSymbols.getLayout())
                 }
                 MainActivity.KB_EMO -> {
+                    lastMode = mode
                     keyboardEmoji.inputConnection = currentInputConnection
                     keyboardFrame.addView(keyboardEmoji.getLayout())
+                }
+                MainActivity.KB_NUM -> {
+                    lastMode = MainActivity.KB_NUM
+                    keyboardNumpad.inputConnection = currentInputConnection
+                    keyboardFrame.addView(keyboardNumpad.getLayout())
                 }
                 MainActivity.KB_AAC -> {
                     keyboardAAC.inputConnection = currentInputConnection
@@ -119,6 +125,7 @@ class KeyboardService: InputMethodService() {
         // 숫자 입력시 숫자패드로 전환
         if(currentInputEditorInfo.inputType == EditorInfo.TYPE_CLASS_NUMBER){
             keyboardFrame.removeAllViews()
+            lastMode = MainActivity.KB_NUM
             keyboardNumpad.inputConnection = currentInputConnection
             keyboardFrame.addView(keyboardNumpad.getLayout())
         }

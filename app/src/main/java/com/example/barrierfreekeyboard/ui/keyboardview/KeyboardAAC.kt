@@ -1,17 +1,22 @@
 package com.example.barrierfreekeyboard.ui.keyboardview
 
 import android.content.Context
-import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.view.LayoutInflater
 import android.view.inputmethod.InputConnection
 import android.widget.LinearLayout
+import androidx.core.content.edit
 import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 
-class KeyboardAAC constructor(var context: Context, var layoutInflater: LayoutInflater, var keyboardInteractionListener: KeyboardInteractionListener) {
+class KeyboardAAC constructor(
+    var context: Context,
+    var layoutInflater: LayoutInflater,
+    var keyboardInteractionListener: KeyboardInteractionListener
+    ) {
     lateinit var aacLayout: LinearLayout
     lateinit var inputConnection: InputConnection
 
@@ -32,12 +37,21 @@ class KeyboardAAC constructor(var context: Context, var layoutInflater: LayoutIn
         }
 
         val sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE)
+        val initFlag = sharedPreferences.getBoolean("aac_init", false)
+
         vibrate = sharedPreferences.getInt("vibrate", -1)
         sound = sharedPreferences.getInt("sound", -1)
-        TODO("Not Yet Implemented")
+
+        // init aac
+        if(!initFlag){
+            sharedPreferences.edit {
+                putBoolean("aac_init", true)
+            }
+        }
+        // fetch db info
         // init Linearlayout in each line
         // Set height in both landscape and portrait
-        // init key text
+        // init key image
         // init layoutLines
     }
 
@@ -45,7 +59,18 @@ class KeyboardAAC constructor(var context: Context, var layoutInflater: LayoutIn
         return aacLayout
     }
 
-    private fun setLayoutComponents(){
+    private fun setLayoutComponents(initFlag: Boolean){
+        // TODO: make pre-packaged db file and use it to init db
+        // (temp) remove all records from db
+
+        for(i in 1..4){
+
+        }
+
+        val sampleImageUri = Uri.parse("android.resource://com.example.barrierfreekeyboard/" + R.drawable.sample_1)
+        // symbolList = listOf(AACSymbol("symbol1", sampleImageUri), AACSymbol("symbol2", sampleImageUri), AACSymbol("symbol3", sampleImageUri), AACSymbol("symbol4", sampleImageUri))
+        // categoryList = listOf(AACCategory("category1", sampleImageUri, listOf()), AACCategory("category2", sampleImageUri, listOf()), AACCategory("category3", sampleImageUri, listOf()))
+
         TODO("Not Yet Implemented")
     }
 

@@ -18,7 +18,11 @@ import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
 
-class KeyboardEmoji constructor(var context: Context, var layoutInflater: LayoutInflater, var keyboardInteractionListener: KeyboardInteractionListener){
+class KeyboardEmoji (
+    context: Context,
+    layoutInflater: LayoutInflater,
+    keyboardInteractionListener: KeyboardInteractionListener
+) : Keyboard(context, layoutInflater, keyboardInteractionListener) {
     lateinit var emojiLayout: LinearLayout
     lateinit var inputConnection: InputConnection
 
@@ -30,7 +34,7 @@ class KeyboardEmoji constructor(var context: Context, var layoutInflater: Layout
 
     private lateinit var emojiRecyclerViewAdapter: EmojiRecyclerViewAdapter
 
-    fun init(){
+    override fun init(){
         emojiLayout = layoutInflater.inflate(R.layout.keyboard_emoji, null) as LinearLayout
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -46,7 +50,7 @@ class KeyboardEmoji constructor(var context: Context, var layoutInflater: Layout
         setLayoutComponents(0x1F600, 79)
     }
 
-    fun getLayout(): LinearLayout {
+    override fun getLayout(): LinearLayout {
         return emojiLayout
     }
 

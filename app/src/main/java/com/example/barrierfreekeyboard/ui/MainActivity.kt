@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         const val KB_KOR = 1
         const val KB_SYM = 2
         const val KB_EMO = 3
+        const val KB_NUM = 4
 
         const val KB_AAC = 10
 
