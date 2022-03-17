@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.ui.keyboardview.aac.KeyboardAAC
 import com.example.barrierfreekeyboard.ui.keyboardview.common.*
+import timber.log.Timber
 
 class KeyboardService: InputMethodService() {
 
@@ -80,6 +81,9 @@ class KeyboardService: InputMethodService() {
 
     override fun onCreate() {
         super.onCreate()
+        Timber.d("yeah")
+        // TODO: 1. 이미지를 internal memory로 복사하고
+        // TODO: 2. 복사한 이미지를 이용해서 aacsymbol, aaccategory 객체를 만든 다음 db를 채우고
         keyboardView = layoutInflater.inflate(R.layout.keyboard_view, null) as LinearLayout
         sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE)
         keyboardFrame = keyboardView.findViewById(R.id.keyboard_frame)

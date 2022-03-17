@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Entity(tableName = "aac_symbol_table")
 data class AACSymbol(
     @ColumnInfo(name = "text")
     val text: String,
@@ -13,5 +14,5 @@ data class AACSymbol(
     // TODO: val soundURI(?)
 ){
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0
+    var id: Long = 0
 }
