@@ -1,81 +1,29 @@
-package com.example.barrierfreekeyboard.ui.keyboardview
+package com.example.barrierfreekeyboard.ui.keyboardview.common
 
 import android.content.Context
-import android.net.Uri
 import android.os.Build
+import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputConnection
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.edit
-import com.example.barrierfreekeyboard.R
+import androidx.core.view.children
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
+import com.example.barrierfreekeyboard.ui.MainActivity
+import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
-class KeyboardAAC constructor(
-    var context: Context,
-    var layoutInflater: LayoutInflater,
-    var keyboardInteractionListener: KeyboardInteractionListener
-    ) {
-    lateinit var aacLayout: LinearLayout
-    lateinit var inputConnection: InputConnection
-
-    var sound = 0
-    var vibrate = 0
-    lateinit var vibrator: Vibrator
-
-    private lateinit var aacCategoryRecyclerViewAdapter: EmojiRecyclerViewAdapter
-    private lateinit var aacRecyclerViewAdapter: AACRecyclerViewAdapter
-
-    fun init(){
-        aacLayout = layoutInflater.inflate(R.layout.keyboard_aac, null) as LinearLayout
-        vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-            vibratorManager.defaultVibrator
-        } else {
-            context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        }
-
-        val sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE)
-        val initFlag = sharedPreferences.getBoolean("aac_init", false)
-
-        vibrate = sharedPreferences.getInt("vibrate", -1)
-        sound = sharedPreferences.getInt("sound", -1)
-
-        // init aac
-        if(!initFlag){
-            sharedPreferences.edit {
-                putBoolean("aac_init", true)
-            }
-        }
-        // fetch db info
-        // init Linearlayout in each line
-        // Set height in both landscape and portrait
-        // init key image
-        // init layoutLines
-    }
-
-    fun getLayout(): LinearLayout{
-        return aacLayout
-    }
-
-    private fun setLayoutComponents(initFlag: Boolean){
-        // TODO: make pre-packaged db file and use it to init db
-        // (temp) remove all records from db
-
-        for(i in 1..4){
-
-        }
-
-        val sampleImageUri = Uri.parse("android.resource://com.example.barrierfreekeyboard/" + R.drawable.sample_1)
-        // symbolList = listOf(AACSymbol("symbol1", sampleImageUri), AACSymbol("symbol2", sampleImageUri), AACSymbol("symbol3", sampleImageUri), AACSymbol("symbol4", sampleImageUri))
-        // categoryList = listOf(AACCategory("category1", sampleImageUri, listOf()), AACCategory("category2", sampleImageUri, listOf()), AACCategory("category3", sampleImageUri, listOf()))
-
-        TODO("Not Yet Implemented")
-    }
-
-
-    /*
+class KeyboardEmoji (
+    context: Context,
+    layoutInflater: LayoutInflater,
+    keyboardInteractionListener: KeyboardInteractionListener
+) : Keyboard(context, layoutInflater, keyboardInteractionListener) {
     lateinit var emojiLayout: LinearLayout
     lateinit var inputConnection: InputConnection
 
@@ -87,7 +35,7 @@ class KeyboardAAC constructor(
 
     private lateinit var emojiRecyclerViewAdapter: EmojiRecyclerViewAdapter
 
-    fun init(){
+    override fun init(){
         emojiLayout = layoutInflater.inflate(R.layout.keyboard_emoji, null) as LinearLayout
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -103,7 +51,7 @@ class KeyboardAAC constructor(
         setLayoutComponents(0x1F600, 79)
     }
 
-    fun getLayout(): LinearLayout {
+    override fun getLayout(): LinearLayout {
         return emojiLayout
     }
 
@@ -134,7 +82,7 @@ class KeyboardAAC constructor(
                 actionButton.setOnClickListener {
                     when((it as Button).text){
                         "한/영" -> {
-                            keyboardInteractionListener.modechange(1)
+                            keyboardInteractionListener.modechange(MainActivity.KB_KOR)
                         }
                         getEmojiByUnicode(0x1F600) -> {
                             setLayoutComponents(0x1F600, 79)
@@ -183,14 +131,13 @@ class KeyboardAAC constructor(
     }
 
     private fun getDeleteAction(): View.OnClickListener {
-        return View.OnClickListener {
+        return View.OnClickListener{
             playVibrate()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 inputConnection.deleteSurroundingTextInCodePoints(1, 0)
-            } else {
-                inputConnection.deleteSurroundingText(1, 0)
+            }else{
+                inputConnection.deleteSurroundingText(1,0)
             }
         }
     }
-    */
 }

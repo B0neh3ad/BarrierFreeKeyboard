@@ -1,4 +1,4 @@
-package com.example.barrierfreekeyboard.ui.keyboardview
+package com.example.barrierfreekeyboard.ui.keyboardview.common
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import android.view.inputmethod.InputConnection
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barrierfreekeyboard.R
-import com.example.barrierfreekeyboard.databinding.EmojiItemBinding
 
 class EmojiRecyclerViewAdapter(val context: Context, val emojiList: ArrayList<String>, val inputConnection: InputConnection): RecyclerView.Adapter<EmojiRecyclerViewAdapter.EmojiRecyclerViewHolder>(){
 

@@ -1,4 +1,4 @@
-package com.example.barrierfreekeyboard.ui.keyboardview
+package com.example.barrierfreekeyboard.ui.keyboardview.common
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,10 +16,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.children
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
 class KeyboardSymbols(
     context: Context,

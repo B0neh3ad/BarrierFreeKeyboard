@@ -1,4 +1,4 @@
-package com.example.barrierfreekeyboard.ui.keyboardview
+package com.example.barrierfreekeyboard.ui.keyboardview.common
 
 import android.view.inputmethod.InputConnection
 

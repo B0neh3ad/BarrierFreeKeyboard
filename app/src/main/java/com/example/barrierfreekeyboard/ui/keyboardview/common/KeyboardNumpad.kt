@@ -1,4 +1,4 @@
-package com.example.barrierfreekeyboard.ui.keyboardview
+package com.example.barrierfreekeyboard.ui.keyboardview.common
 
 import android.content.Context
 import android.content.res.Configuration
@@ -14,6 +14,7 @@ import androidx.core.view.children
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
 class KeyboardNumpad(
     context: Context,

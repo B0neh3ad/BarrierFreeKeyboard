@@ -6,15 +6,18 @@
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/ic_caps_lock.xml" value="0.12953586497890296" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/ic_caps_unlock.xml" value="0.12953586497890296" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/ic_enter.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/key_background.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/normal.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/pressed.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/drawable/textlines.xml" value="0.1" />
-        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/aac_item.xml" value="0.1" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/aac_category_item.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/aac_item.xml" value="0.22" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/aac_symbol_item.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/emoji_item.xml" value="0.1" />
-        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_aac.xml" value="0.22" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/emoji_item.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_aac.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_action.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_chunjiin.xml" value="0.1" />
         <entry key="..\:/Users/Jinsu/github/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_default.xml" value="0.1" />

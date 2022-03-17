@@ -9,7 +9,8 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.example.barrierfreekeyboard.R
-import com.example.barrierfreekeyboard.ui.keyboardview.*
+import com.example.barrierfreekeyboard.ui.keyboardview.aac.KeyboardAAC
+import com.example.barrierfreekeyboard.ui.keyboardview.common.*
 
 class KeyboardService: InputMethodService() {
 
@@ -17,19 +18,22 @@ class KeyboardService: InputMethodService() {
     lateinit var keyboardFrame: FrameLayout
     lateinit var defaultButton: Button
     lateinit var aacButton: Button
+
     lateinit var keyboardKorean: KeyboardKorean
     lateinit var keyboardEnglish: KeyboardEnglish
     lateinit var keyboardSymbols: KeyboardSymbols
     lateinit var keyboardEmoji: KeyboardEmoji
     lateinit var keyboardNumpad: KeyboardNumpad
     lateinit var keyboardAAC: KeyboardAAC
+
     lateinit var sharedPreferences: SharedPreferences
+
     var lastMode = MainActivity.KB_KOR
     var isAAC = 0
     var isQwerty = 0
 
     val keyboardInteractionListener = object: KeyboardInteractionListener {
-        // TODO: inputconnection == null인 경우
+        // TODO: inputconnection == null인 경우 처리
         override fun modechange(mode: Int) {
             currentInputConnection.finishComposingText()
             keyboardFrame.removeAllViews()
@@ -48,8 +52,7 @@ class KeyboardService: InputMethodService() {
                         keyboardFrame.addView(keyboardKorean.getLayout())
                     }
                     else {
-                        // 천지인
-                        // keyboardFrame.addView(KeyboardChunjiin.newInstance(applicationContext, layoutInflater, currentInputConnection, this))
+                        // 천지인 등..
                     }
                 }
                 MainActivity.KB_SYM -> {

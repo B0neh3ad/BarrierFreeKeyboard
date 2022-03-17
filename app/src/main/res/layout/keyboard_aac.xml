@@ -2,20 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="5"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- 카테고리 목록 -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/aac_category_recyclerview"
+        android:id="@+id/category_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        tools:listitem="@layout/aac_category_item"/>
 
     <!-- AAC 상징 목록 -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/aac_recyclerview"
+        android:id="@+id/symbol_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        tools:listitem="@layout/aac_symbol_item"
+        >
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
