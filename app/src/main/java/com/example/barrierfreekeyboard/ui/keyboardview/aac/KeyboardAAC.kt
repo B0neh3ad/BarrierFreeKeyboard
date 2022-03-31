@@ -12,15 +12,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.model.AACCategory
 import com.example.barrierfreekeyboard.model.AACSymbol
+import com.example.barrierfreekeyboard.repository.AACRepository
+import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
+import com.example.barrierfreekeyboard.ui.KeyboardService
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
-
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import javax.inject.Inject
 
 class KeyboardAAC (
     context: Context,
     layoutInflater: LayoutInflater,
-    keyboardInteractionListener: KeyboardInteractionListener
+    keyboardInteractionListener: KeyboardInteractionListener,
+    // TODO: 3. db에 저장된 category, symbol list를 불러오고
+    val aacCategoryList: ArrayList<AACCategory>,
+    val aacSymbolList: ArrayList<ArrayList<AACSymbol>>
     ) : Keyboard(context, layoutInflater, keyboardInteractionListener) {
+
     lateinit var aacLayout: LinearLayout
     lateinit var inputConnection: InputConnection
 
@@ -29,43 +38,29 @@ class KeyboardAAC (
     private lateinit var categoryRecyclerViewAdapter: CategoryRecyclerViewAdapter
     private lateinit var symbolRecyclerViewAdapter: SymbolRecyclerViewAdapter
 
-    private lateinit var categoryList: List<AACCategory>
-    private lateinit var symbolList: List<AACSymbol>
-
     override fun init(){
+        Timber.d("KeyboardAAC:init")
         aacLayout = layoutInflater.inflate(R.layout.keyboard_aac, null) as LinearLayout
         sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE)
 
-        // TODO: fetch aac categories and files and init list
-
-        setLayoutComponents(0)
+        setLayoutComponents()
+        setRecyclerViewComponents(aacCategoryList[0].title)
     }
 
     override fun getLayout(): LinearLayout{
         return aacLayout
     }
 
-    fun setLayoutComponents(categoryIdx: Int){
-        /** sample variables **/
-        val categoryCount = 5
-        val symbolCount = 20
-        val symbolPerLine = 4
-        val sampleImgUri = Uri.parse("android.resource://com.example.barrierfreekeyboard/drawable/sample_1")
-
+    fun setLayoutComponents(){
+        // TODO: categoryIdx에 맞는 symbol들만 채울 것
         val config = context.resources.configuration
         val keyboardHeight = sharedPreferences.getInt("keyboardHeight", 150)
         aacLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, keyboardHeight * 5)
 
         // Category RecyclerView Setting
         var categoryRecyclerView = aacLayout.findViewById<RecyclerView>(R.id.category_recyclerview)
-        val categoryList = ArrayList<AACCategory>()
 
-        /** category List init */
-        for(i in 0..categoryCount){
-            categoryList.add(AACCategory("Category $i", sampleImgUri, listOf<Long>()))
-        }
-
-        categoryRecyclerViewAdapter = CategoryRecyclerViewAdapter(context, categoryList, inputConnection, categoryRecyclerView.height)
+        categoryRecyclerViewAdapter = CategoryRecyclerViewAdapter(context, aacCategoryList, inputConnection, categoryRecyclerView.height) { setRecyclerViewComponents(it) }
         categoryRecyclerView.adapter = categoryRecyclerViewAdapter
         val categoryLayoutManager = object: LinearLayoutManager(context) {
             override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
@@ -77,22 +72,18 @@ class KeyboardAAC (
         categoryLayoutManager.isItemPrefetchEnabled = true
         categoryLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         categoryRecyclerView.layoutManager = categoryLayoutManager
+    }
 
-        // Symbol RecyclerView Setting
+    fun setRecyclerViewComponents(category: String){
+        val categoryIdx = aacCategoryList.map { it.title }.indexOf(category)
         var symbolRecyclerView = aacLayout.findViewById<RecyclerView>(R.id.symbol_recyclerview)
-        val symbolList = ArrayList<AACSymbol>()
 
-        /** symbol List init */
-        for(i in 0..symbolCount){
-            symbolList.add(AACSymbol("Symbol$i", sampleImgUri))
-        }
-
-        symbolRecyclerViewAdapter = SymbolRecyclerViewAdapter(context, symbolList, inputConnection)
+        symbolRecyclerViewAdapter = SymbolRecyclerViewAdapter(context, aacSymbolList[categoryIdx], inputConnection)
         symbolRecyclerView.adapter = symbolRecyclerViewAdapter
-        val symbolLayoutManager = object: GridLayoutManager(context, symbolPerLine){
+        val symbolLayoutManager = object: GridLayoutManager(context, KeyboardConstants.SYMBOL_PER_LINE){
             override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-                lp?.height = width / symbolPerLine
-                lp?.width = width / symbolPerLine
+                lp?.height = width / KeyboardConstants.SYMBOL_PER_LINE
+                lp?.width = width / KeyboardConstants.SYMBOL_PER_LINE
                 return super.checkLayoutParams(lp)
             }
         }

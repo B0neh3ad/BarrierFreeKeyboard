@@ -3,6 +3,7 @@ package com.example.barrierfreekeyboard.model
 import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import java.net.URI
 
 class Converters {
     @TypeConverter
@@ -16,4 +17,10 @@ class Converters {
 
     @TypeConverter
     fun stringToUri(value: String?): Uri = Uri.parse(value)
+
+    @TypeConverter
+    fun javaURIToString(value: URI?): String = value.toString()
+
+    @TypeConverter
+    fun stringToJavaURI(value: String?): URI = URI(value)
 }

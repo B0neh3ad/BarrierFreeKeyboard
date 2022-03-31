@@ -14,6 +14,7 @@ import androidx.core.view.children
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
 class KeyboardNumpad(
@@ -92,11 +93,11 @@ class KeyboardNumpad(
     private fun playClick(i: Int) {
         val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         when (i) {
-            MainActivity.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
-            MainActivity.KEYCODE_DONE, MainActivity.KEYCODE_LF -> am!!.playSoundEffect(
+            KeyboardConstants.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
+            KeyboardConstants.KEYCODE_DONE, KeyboardConstants.KEYCODE_LF -> am!!.playSoundEffect(
                 AudioManager.FX_KEYPRESS_RETURN
             )
-            MainActivity.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
+            KeyboardConstants.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
             else -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, (-1).toFloat())
         }
     }

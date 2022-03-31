@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -83,4 +84,8 @@ dependencies {
 
     // gson
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    // lifecycle in service
+    implementation 'androidx.lifecycle:lifecycle-service:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
 }

@@ -1,18 +1,16 @@
 package com.example.barrierfreekeyboard.model
 
-import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.net.URI
 
 @Entity(tableName = "aac_category_table")
 data class AACCategory(
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "image_uri")
-    val imageURI: Uri,
-    @ColumnInfo(name = "symbol_list")
-    val symbolIdList: List<Long>
+    val imageURI: String
     // TODO: val soundURI(?)
 ){
     @PrimaryKey(autoGenerate = true)

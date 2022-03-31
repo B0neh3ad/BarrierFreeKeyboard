@@ -21,7 +21,6 @@
             <meta-data
                 android:name="android.view.im"
                 android:resource="@xml/xml"/>
-
             <intent-filter>
                 <action android:name="android.view.InputMethod"/>
             </intent-filter>
@@ -33,7 +32,6 @@
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

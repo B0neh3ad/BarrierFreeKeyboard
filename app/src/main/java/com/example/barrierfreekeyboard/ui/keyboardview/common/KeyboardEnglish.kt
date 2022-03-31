@@ -20,6 +20,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
@@ -153,7 +154,7 @@ class KeyboardEnglish(
     private fun playClick(i: Int) {
         val am = context.getSystemService(AUDIO_SERVICE) as AudioManager?
         when (i) {
-            MainActivity.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
+            KeyboardConstants.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
             else -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, (-1).toFloat())
         }
     }
@@ -162,10 +163,10 @@ class KeyboardEnglish(
     private fun playVibrate(){
         if(vibrate > 0){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(MainActivity.VIB_INT.toLong(), vibrate))
+                vibrator.vibrate(VibrationEffect.createOneShot(KeyboardConstants.VIB_INT.toLong(), vibrate))
             }
             else {
-                vibrator.vibrate(MainActivity.VIB_INT.toLong())
+                vibrator.vibrate(KeyboardConstants.VIB_INT.toLong())
             }
         }
     }
@@ -188,10 +189,10 @@ class KeyboardEnglish(
             }
             when(textView.text.toString()) {
                 "한/영" -> {
-                    keyboardInteractionListener.modechange(MainActivity.KB_KOR)
+                    keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
                 }
                 "!#1" -> {
-                    keyboardInteractionListener.modechange(MainActivity.KB_SYM)
+                    keyboardInteractionListener.modechange(KeyboardConstants.KB_SYM)
                 }
                 else -> {
                     playClick(textView.text.toString().toCharArray()[0].code)
@@ -230,10 +231,10 @@ class KeyboardEnglish(
             else{
                 when(actionButton.text.toString()) {
                     "한/영" -> {
-                        keyboardInteractionListener.modechange(MainActivity.KB_KOR)
+                        keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
                     }
                     "!#1" -> {
-                        keyboardInteractionListener.modechange(MainActivity.KB_SYM)
+                        keyboardInteractionListener.modechange(KeyboardConstants.KB_SYM)
                     }
                     else -> {
                         playClick(actionButton.text.toString().toCharArray()[0].code)
@@ -351,7 +352,7 @@ class KeyboardEnglish(
                         specialKey.setBackgroundResource(R.drawable.key_background)
                     }
                     "한/영" -> {
-                        myOnClickListener = View.OnClickListener { keyboardInteractionListener.modechange(MainActivity.KB_KOR) }
+                        myOnClickListener = View.OnClickListener { keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR) }
                         specialKey.setOnClickListener(myOnClickListener)
                         actionButton.text = myText[item]
                         buttons.add(actionButton)

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
 class KeyboardEmoji (
@@ -48,7 +49,8 @@ class KeyboardEmoji (
         vibrate = sharedPreferences.getInt("vibrate", -1)
         sound = sharedPreferences.getInt("sound", -1)
 
-        setLayoutComponents(0x1F600, 79)
+        setLayoutComponents()
+        setRecyclerViewComponents(0x1F600, 79)
     }
 
     override fun getLayout(): LinearLayout {
@@ -66,7 +68,7 @@ class KeyboardEmoji (
         }
     }
 
-    private fun setLayoutComponents(unicode: Int, count:Int) {
+    private fun setLayoutComponents() {
         // Emoji Category Setting
         val children = emojiLayout.findViewById<LinearLayout>(R.id.fourth_line).children.toList()
         for(item in children.indices){
@@ -82,31 +84,33 @@ class KeyboardEmoji (
                 actionButton.setOnClickListener {
                     when((it as Button).text){
                         "한/영" -> {
-                            keyboardInteractionListener.modechange(MainActivity.KB_KOR)
+                            keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
                         }
                         getEmojiByUnicode(0x1F600) -> {
-                            setLayoutComponents(0x1F600, 79)
+                            setRecyclerViewComponents(0x1F600, 79)
                         }
                         getEmojiByUnicode(0x1F466) -> {
-                            setLayoutComponents(0x1F466, 88)
+                            setRecyclerViewComponents(0x1F466, 88)
                         }
                         getEmojiByUnicode(0x1F91A) -> {
-                            setLayoutComponents(0x1F91A, 88)
+                            setRecyclerViewComponents(0x1F91A, 88)
                         }
                         getEmojiByUnicode(0x1F423) -> {
-                            setLayoutComponents(0x1F423, 35)
+                            setRecyclerViewComponents(0x1F423, 35)
                         }
                         getEmojiByUnicode(0x1F331) -> {
-                            setLayoutComponents(0x1F331, 88)
+                            setRecyclerViewComponents(0x1F331, 88)
                         }
                         getEmojiByUnicode(0x1F682) -> {
-                            setLayoutComponents(0x1F682, 64)
+                            setRecyclerViewComponents(0x1F682, 64)
                         }
                     }
                 }
             }
         }
+    }
 
+    private fun setRecyclerViewComponents(unicode: Int, count: Int){
         // RecyclerView Setting
         var recyclerView = emojiLayout.findViewById<RecyclerView>(R.id.emoji_recyclerview)
         val emojiList = ArrayList<String>()

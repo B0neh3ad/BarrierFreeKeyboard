@@ -18,9 +18,11 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import java.lang.NumberFormatException
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
+import timber.log.Timber
 
 class KeyboardKorean (
     context: Context,
@@ -157,9 +159,9 @@ class KeyboardKorean (
     private fun playClick(i: Int){
         val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         when (i) {
-            MainActivity.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
-            MainActivity.KEYCODE_DONE, MainActivity.KEYCODE_LF -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN)
-            MainActivity.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
+            KeyboardConstants.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
+            KeyboardConstants.KEYCODE_DONE, KeyboardConstants.KEYCODE_LF -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN)
+            KeyboardConstants.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
             else -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, (-1).toFloat())
         }
     }
@@ -168,10 +170,10 @@ class KeyboardKorean (
     private fun playVibrate(){
         if(vibrate > 0){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(MainActivity.VIB_INT.toLong(), vibrate))
+                vibrator.vibrate(VibrationEffect.createOneShot(KeyboardConstants.VIB_INT.toLong(), vibrate))
             }
             else {
-                vibrator.vibrate(MainActivity.VIB_INT.toLong())
+                vibrator.vibrate(KeyboardConstants.VIB_INT.toLong())
             }
         }
     }
@@ -315,14 +317,14 @@ class KeyboardKorean (
                         specialKey.setBackgroundResource(R.drawable.key_background)
                     }
                     "한/영" -> {
-                        myOnClickListener = View.OnClickListener { keyboardInteractionListener.modechange(MainActivity.KB_ENG) }
+                        myOnClickListener = View.OnClickListener { keyboardInteractionListener.modechange(KeyboardConstants.KB_ENG) }
                         specialKey.setOnClickListener(myOnClickListener)
                         actionButton.text = myText[item]
                         buttons.add(actionButton)
                         actionButton.setOnTouchListener(getOnTouchListener(myOnClickListener))
                     }
                     "!#1" -> {
-                        myOnClickListener = View.OnClickListener { keyboardInteractionListener.modechange(MainActivity.KB_SYM) }
+                        myOnClickListener = View.OnClickListener { keyboardInteractionListener.modechange(KeyboardConstants.KB_SYM) }
                         specialKey.setOnClickListener(myOnClickListener)
                         actionButton.text = myText[item]
                         buttons.add(actionButton)

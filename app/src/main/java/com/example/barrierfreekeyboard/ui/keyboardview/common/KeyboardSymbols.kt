@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
 import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 
 class KeyboardSymbols(
@@ -129,9 +130,9 @@ class KeyboardSymbols(
     private fun playClick(i: Int) {
         val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         when (i) {
-            MainActivity.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
-            MainActivity.KEYCODE_DONE, MainActivity.KEYCODE_LF -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN)
-            MainActivity.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
+            KeyboardConstants.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
+            KeyboardConstants.KEYCODE_DONE, KeyboardConstants.KEYCODE_LF -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN)
+            KeyboardConstants.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
             else -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, (-1).toFloat())
         }
     }
@@ -140,10 +141,10 @@ class KeyboardSymbols(
     private fun playVibrate(){
         if(vibrate > 0){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(MainActivity.VIB_INT.toLong(), vibrate))
+                vibrator.vibrate(VibrationEffect.createOneShot(KeyboardConstants.VIB_INT.toLong(), vibrate))
             }
             else {
-                vibrator.vibrate(MainActivity.VIB_INT.toLong())
+                vibrator.vibrate(KeyboardConstants.VIB_INT.toLong())
             }
         }
     }
@@ -185,13 +186,13 @@ class KeyboardSymbols(
             else{
                 when(actionButton.text.toString()) {
                     "\uD83D\uDE00" -> {
-                        keyboardInteractionListener.modechange(MainActivity.KB_EMO)
+                        keyboardInteractionListener.modechange(KeyboardConstants.KB_EMO)
                     }
                     "한/영" -> {
-                        keyboardInteractionListener.modechange(MainActivity.KB_KOR)
+                        keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
                     }
                     "가" -> {
-                        keyboardInteractionListener.modechange(MainActivity.KB_KOR)
+                        keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
                     }
                     else -> {
                         playClick(actionButton.text.toString().toCharArray()[0].code)

@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="5"
+    android:weightSum="4"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -21,7 +21,7 @@
         android:id="@+id/symbol_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="3"
         tools:listitem="@layout/aac_symbol_item"
         >
     </androidx.recyclerview.widget.RecyclerView>
