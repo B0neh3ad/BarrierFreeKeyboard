@@ -1,4 +1,4 @@
-package com.example.barrierfreekeyboard.ui
+package com.example.barrierfreekeyboard.ui.settings
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +14,7 @@ import com.example.barrierfreekeyboard.BuildConfig
 import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.databinding.ActivityImeSettingsBinding
 import com.example.barrierfreekeyboard.databinding.AppBarBinding
+import com.example.barrierfreekeyboard.ui.settings.page.DefaultSettings
 import timber.log.Timber
 
 class ImeSettingsActivity : AppCompatActivity() {
@@ -110,19 +111,6 @@ class ImeSettingsActivity : AppCompatActivity() {
                 requireActivity().title = title
             }
             return super.onPreferenceStartFragment(caller, pref)
-        }
-    }
-
-    class DefaultSettings : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.keyboard_pref, rootKey)
-        }
-    }
-
-    @Suppress("unused")
-    class SecondarySettings : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.keyboard_pref_s1, rootKey)
         }
     }
 }

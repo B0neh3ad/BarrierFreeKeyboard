@@ -2,6 +2,12 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <Preference
+        app:key="empty_settings"
+        app:title=""
+        app:isPreferenceVisible="false"
+        app:fragment="com.example.barrierfreekeyboard.ui.settings.EmptySettings"/>
+
     <SwitchPreferenceCompat
         app:key="test1"
         app:icon="@drawable/ic_outline_settings_24"
@@ -16,7 +22,49 @@
     <Preference
         app:key="test3"
         app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test4"
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test5"
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test6"
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test7"
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test8"
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test9"
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="테스트 입니다"
+        app:summary="메시지 메시지 메시지 메시지 메시지 메시지 메시지"/>
+
+    <Preference
+        app:key="test10"
+        app:icon="@drawable/ic_outline_settings_24"
         app:title="테스트 설정 2 입니다"
-        app:fragment="com.example.barrierfreekeyboard.ui.ImeSettingsActivity$SecondarySettings"
+        app:fragment="com.example.barrierfreekeyboard.ui.settings.page.SecondarySettings"
         />
 </PreferenceScreen>

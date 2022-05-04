@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".ui.ImeSettingsActivity"
+            android:name=".ui.settings.ImeSettingsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

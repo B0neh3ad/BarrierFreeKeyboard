@@ -21,6 +21,7 @@ import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.databinding.ActivityMainBinding
 import com.example.barrierfreekeyboard.databinding.AppBarBinding
 import com.example.barrierfreekeyboard.databinding.MainKeyboardSettingCardBinding
+import com.example.barrierfreekeyboard.ui.settings.ImeSettingsActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
