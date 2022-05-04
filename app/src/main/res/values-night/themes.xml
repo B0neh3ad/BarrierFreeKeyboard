@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="Theme.BarrierFreeKeyboard" parent="Theme.Material3.Dark.NoActionBar">
@@ -35,6 +35,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
 </resources>

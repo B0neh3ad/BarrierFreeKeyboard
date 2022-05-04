@@ -88,4 +88,7 @@ dependencies {
     // lifecycle in service
     implementation 'androidx.lifecycle:lifecycle-service:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+
+    // Preference Screen
+    implementation 'androidx.preference:preference-ktx:1.2.0'
 }

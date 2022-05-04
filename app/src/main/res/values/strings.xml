@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BarrierFreeKeyboard</string>
+    <string name="settings_activity">Settings</string>
+    <string name="keyboard_setting_guide"><b>설정 > 일반 > 언어 및 입력방식 > 스크린 키보드</b>에서 <b>BarrierFreeKeyboard</b>를 추가한 후 사용하실 수 있습니다.</string>
+    <string name="keyboard_test_normal">여기에 입력</string>
+    <string name="keyboard_test_number">여기에 숫자 입력</string>
+    <string name="goto_keyboard_setting">설정하기</string>
+    <string name="menu_setting">Setting</string>
 </resources>

@@ -10,21 +10,10 @@
 
     <include layout="@layout/app_bar"/>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll"
+    <include layout="@layout/layout_main"
+        android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Content Scroll"
-        android:fitsSystemWindows="true"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:ignore="HardcodedText">
-
-        <include layout="@layout/layout_main"
-            android:id="@+id/layout_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
