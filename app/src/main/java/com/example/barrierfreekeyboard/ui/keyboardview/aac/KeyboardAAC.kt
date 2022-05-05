@@ -44,7 +44,9 @@ class KeyboardAAC (
         sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE)
 
         setLayoutComponents()
-        setRecyclerViewComponents(aacCategoryList[0].title)
+        if (aacCategoryList.isNotEmpty()) {
+            setRecyclerViewComponents(aacCategoryList[0].title)
+        }
     }
 
     override fun getLayout(): LinearLayout{

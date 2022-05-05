@@ -30,13 +30,36 @@ import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if(BuildConfig.DEBUG){
             Timber.plant(Timber.DebugTree())
         }
-        setContentView(R.layout.activity_main)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val appbar = AppBarBinding.bind(binding.root)
+        setContentView(binding.root)
+        setSupportActionBar(appbar.toolbar)
+
+        val card = MainKeyboardSettingCardBinding.bind(binding.root)
+
+        card.gotoSetting.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            applySplash()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
