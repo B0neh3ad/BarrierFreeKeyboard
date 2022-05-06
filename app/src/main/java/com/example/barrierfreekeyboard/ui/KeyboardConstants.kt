@@ -3,7 +3,7 @@ package com.example.barrierfreekeyboard.ui
 object KeyboardConstants {
 
     const val KB_DEFAULT_USE_NUMPAD = true
-    const val KB_DEFAULT_HEIGHT = 300
+    const val KB_DEFAULT_HEIGHT = 350
     const val KB_DEFAULT_SOUND = -1
     const val KB_DEFAULT_VIBRATE = -1
     const val KB_DEFAULT_INITIAL_INTERVAL = 350

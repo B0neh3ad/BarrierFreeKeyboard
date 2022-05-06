@@ -14,9 +14,9 @@
         app:icon="@drawable/ic_baseline_height_24"
         app:min="200"
         android:max="600"
-        app:defaultValue="300"
+        app:defaultValue="350"
         app:title="키보드의 높이"
-        app:summary="키보드의 높이를 설정합니다. (기본값 : 300)"
+        app:summary="키보드의 높이를 설정합니다. (기본값 : 350)"
         app:showSeekBarValue="true" />
 
     <SeekBarPreference

@@ -34,26 +34,33 @@
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/app_name.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_aac_keyboard.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_app_name.xml" value="0.1685" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_backspace.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_baseline_keyboard_24.xml" value="0.1685" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_baseline_keyboard_backspace_24.xml" value="0.1685" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_baseline_keyboard_return_24.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_caps_lock.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_caps_lock_fixed.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_caps_unlock.xml" value="0.1685" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_enter.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.25" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_lock_gray_24dp.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/ic_outline_settings_24.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/key_background.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/keyboard_setting_card.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/normal.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/drawable/pressed.xml" value="0.1685" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout-land/activity_main.xml" value="0.14" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout-land/keyboard_numpad.xml" value="0.18" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout-land/layout_main.xml" value="0.16" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/aac_category_item.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/activity_ime_settings.xml" value="0.22" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/activity_main.xml" value="0.3385416666666667" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/app_bar.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_aac.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_default.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_emoji.xml" value="0.16927083333333334" />
-        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_item.xml" value="0.16935904116727463" />
-        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_numpad.xml" value="0.34791666666666665" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_item.xml" value="0.18" />
+        <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_numpad.xml" value="0.18" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_setting_card.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_test_inputs.xml" value="0.2" />
         <entry key="..\:/Users/nenka/Desktop/sha/BarrierFreeKeyboard/app/src/main/res/layout/keyboard_view.xml" value="0.18" />

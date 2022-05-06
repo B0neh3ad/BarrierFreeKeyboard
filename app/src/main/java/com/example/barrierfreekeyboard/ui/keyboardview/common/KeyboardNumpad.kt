@@ -2,9 +2,10 @@ package com.example.barrierfreekeyboard.ui.keyboardview.common
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.SystemClock
+import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -12,6 +13,7 @@ import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.children
 import com.example.barrierfreekeyboard.R
@@ -30,7 +32,8 @@ class KeyboardNumpad(
     keyboardInteractionListener: KeyboardInteractionListener
 ) : Keyboard<KeyboardNumpadBinding>(context, keyboardInteractionListener) {
 
-    private var maxLineRange = 0 until 4
+    private var maxLine = 4
+    private var maxLineRange = 0 until maxLine
 
     private var downView: View? = null
 
@@ -49,6 +52,9 @@ class KeyboardNumpad(
         initialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
         normalInterval = preference.getInt(PrefKeys.KB_NORMAL_INTERVAL, KeyboardConstants.KB_DEFAULT_NORMAL_INTERVAL)
 
+        keyboardLayout.root.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, height.toDips())
+
         val lines = arrayOfNulls<LinearLayout>(4)
         val lineViewsId =
             listOf(R.id.first_line, R.id.second_line, R.id.third_line, R.id.fourth_line)
@@ -58,12 +64,12 @@ class KeyboardNumpad(
         }
 
         // Set height in both landscape and portrait
-        val heightRate =
-            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.7 else 1.0
+        //val heightRate =
+        //    if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.7 else 1.0
         for (i in lines.indices) {
             lines[i]!!.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                (height * heightRate).toInt()
+                (height/maxLine).toDips()
             )
         }
 
@@ -133,13 +139,25 @@ class KeyboardNumpad(
                 specialKey.isFocusable = false
                 actionButton.text = item.normal
 
+                actionButton.textSize = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_SP, 10F, context.resources.displayMetrics)
+
                 buttons.add(actionButton)
 
                 when(item.normal.uppercase()){
                     "DEL" -> {
-                        specialKey.setImageResource(R.drawable.del)
+                        specialKey.setImageResource(R.drawable.ic_baseline_keyboard_backspace_24)
+                        specialKey.imageTintList = ColorStateList.valueOf(Color.BLACK)
                         specialKey.visibility = View.VISIBLE
-                        actionButton.setTextColor(Color.TRANSPARENT)
+                        actionButton.visibility = View.GONE
+                        specialKey.setBackgroundResource(R.drawable.key_background)
+                    }
+                    "ENTER" -> {
+                        specialKey.setImageResource(R.drawable.ic_baseline_keyboard_return_24)
+                        specialKey.imageTintList = ColorStateList.valueOf(Color.BLACK)
+                        specialKey.visibility = View.VISIBLE
+                        actionButton.visibility = View.GONE
+                        specialKey.setBackgroundResource(R.drawable.key_background)
                     }
                 }
 
@@ -150,9 +168,7 @@ class KeyboardNumpad(
                     }
                 }
 
-                actionButton.setOnClickListener { onKeyClickEvent(it, item) }
-                actionButton.setOnLongClickListener { onKeyLongClickEvent(it, item) }
-                actionButton.setOnTouchListener { v, event ->
+                val touchEvent = View.OnTouchListener { v, event ->
                     when(event.action) {
                         MotionEvent.ACTION_DOWN -> {
                             handler.removeCallbacks(handlerRunnable)
@@ -169,6 +185,14 @@ class KeyboardNumpad(
                     }
                     onKeyTouchEvent(v, item, event)
                 }
+
+                actionButton.setOnClickListener { onKeyClickEvent(it, item) }
+                actionButton.setOnLongClickListener { onKeyLongClickEvent(it, item) }
+                actionButton.setOnTouchListener(touchEvent)
+
+                specialKey.setOnClickListener { onKeyClickEvent(it, item) }
+                specialKey.setOnLongClickListener { onKeyLongClickEvent(it, item) }
+                specialKey.setOnTouchListener(touchEvent)
             }
         }
     }
@@ -199,12 +223,14 @@ class KeyboardNumpad(
                 )
             }
             else -> {
-                playClick(key.normal.toCharArray()[0].code)
-                inputConnection?.commitText(key.normal, 1)
+                if (key.normal.trim().isNotEmpty()) {
+                    playClick(key.normal.toCharArray()[0].code)
+                    inputConnection?.commitText(key.normal, 1)
+                }
             }
         }
     }
-    override fun onKeyLongClickEvent(view: View?, key: KeyLine.Item): Boolean = true
+    override fun onKeyLongClickEvent(view: View?, key: KeyLine.Item): Boolean = false
     override fun onKeyTouchEvent(
         view: View?,
         key: KeyLine.Item,

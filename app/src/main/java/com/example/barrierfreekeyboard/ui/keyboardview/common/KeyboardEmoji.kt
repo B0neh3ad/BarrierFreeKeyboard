@@ -57,7 +57,7 @@ class KeyboardEmoji (
             val actionButton = item.findViewById<Button>(R.id.key_button)
             val specialKey = item.findViewById<ImageView>(R.id.special_key)
             if(fourthLineText[idx] == "DEL"){
-                actionButton.setBackgroundResource(R.drawable.del)
+                actionButton.setBackgroundResource(R.drawable.ic_backspace)
                 val myOnClickListener = getDeleteAction()
                 actionButton.setOnClickListener(myOnClickListener)
             }

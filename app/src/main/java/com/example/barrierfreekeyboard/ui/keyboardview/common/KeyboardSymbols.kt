@@ -239,7 +239,7 @@ class KeyboardSymbols(
                         myKey.root.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 4f)
                     }
                     "DEL" -> {
-                        specialKey.setImageResource(R.drawable.del)
+                        specialKey.setImageResource(R.drawable.ic_baseline_keyboard_backspace_24)
                         specialKey.visibility = View.VISIBLE
                         actionButton.visibility = View.GONE
                         myKey.root.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.7f)
@@ -253,7 +253,7 @@ class KeyboardSymbols(
                         myKey.root.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.5f)
                     }
                     "ENTER" -> {
-                        specialKey.setImageResource(R.drawable.ic_enter)
+                        specialKey.setImageResource(R.drawable.ic_baseline_keyboard_return_24)
                         specialKey.visibility = View.VISIBLE
                         actionButton.visibility = View.GONE
                         specialKey.setBackgroundResource(R.drawable.key_background)
@@ -310,15 +310,13 @@ class KeyboardSymbols(
 
                 actionButton.setOnClickListener { onKeyClickEvent(it, item) }
                 specialKey.setOnClickListener { onKeyClickEvent(it, item) }
-                myKey.root.setOnClickListener { onKeyClickEvent(it, item) }
 
                 actionButton.setOnLongClickListener { onKeyLongClickEvent(it, item) }
                 specialKey.setOnLongClickListener { onKeyLongClickEvent(it, item) }
-                myKey.root.setOnLongClickListener { onKeyLongClickEvent(it, item) }
 
                 actionButton.setOnTouchListener(touchEvent)
                 specialKey.setOnTouchListener(touchEvent)
-                myKey.root.setOnTouchListener(touchEvent)
+
                 layoutLines[idx]?.addView(myKey.root)
             }
         }

@@ -52,7 +52,7 @@ class KeyboardService: InputMethodService(), CoroutineScope {
         // TODO: inputconnection == null인 경우 처리
         override fun modechange(mode: Int) {
             val keyboardFrame = keyboardView.keyboardFrame
-            currentInputConnection.finishComposingText()
+            currentInputConnection?.finishComposingText()
             keyboardFrame.removeAllViews()
             when(mode) {
                 KeyboardConstants.KB_ENG -> {
@@ -190,7 +190,7 @@ class KeyboardService: InputMethodService(), CoroutineScope {
                             outp.flush()
                             outp.close()
 
-                            // save file to DB
+                            // save file to DB /// TODO : 초반 시작시 IndexOutOfBoundsException: Index: 18, Size: 18 뜸
                             aacRepository.addSymbol(AACSymbol(KeyboardConstants.SYMBOL_TEXT[categoryIdx][symbolFileIdx] + " ", category, outFile.absolutePath))
                         }
                         Timber.d("Add ${symbolList.size} files to $category")
@@ -269,7 +269,7 @@ class KeyboardService: InputMethodService(), CoroutineScope {
     override fun updateInputViewShown() {
         Timber.d("updateInputViewShown")
         super.updateInputViewShown()
-        currentInputConnection.finishComposingText()
+        currentInputConnection?.finishComposingText()
         isQwerty = sharedPreferences.getInt("keyboardMode", 0)
         // 숫자 입력시 숫자패드로 전환
         if(currentInputEditorInfo.inputType == EditorInfo.TYPE_CLASS_NUMBER){
