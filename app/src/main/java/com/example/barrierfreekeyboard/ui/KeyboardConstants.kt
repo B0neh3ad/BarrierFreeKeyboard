@@ -1,6 +1,14 @@
 package com.example.barrierfreekeyboard.ui
 
 object KeyboardConstants {
+
+    const val KB_DEFAULT_USE_NUMPAD = true
+    const val KB_DEFAULT_HEIGHT = 300
+    const val KB_DEFAULT_SOUND = -1
+    const val KB_DEFAULT_VIBRATE = -1
+    const val KB_DEFAULT_INITIAL_INTERVAL = 350
+    const val KB_DEFAULT_NORMAL_INTERVAL = 100
+
     const val KB_ENG = 0
     const val KB_KOR = 1
     const val KB_SYM = 2

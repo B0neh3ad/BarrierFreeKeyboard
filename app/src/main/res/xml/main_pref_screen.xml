@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:key="empty_settings"
+        app:title=""
+        app:isPreferenceVisible="false"
+        app:fragment="com.example.barrierfreekeyboard.ui.settings.EmptySettings" />
+
+    <Preference
+        app:key="def_keyboard"
+        app:icon="@drawable/ic_baseline_keyboard_24"
+        app:title="기본 키보드 설정"
+        app:summary="일부 설정은 AAC 에도 적용됩니다."
+        app:fragment="com.example.barrierfreekeyboard.ui.settings.page.KeyboardSettings" />
+
+    <Preference
+        app:key="aac_keyboard"
+        app:icon="@drawable/ic_aac_keyboard"
+        app:title="AAC 키보드 설정"
+        app:fragment="com.example.barrierfreekeyboard.ui.settings.page.AACKeyboardSettings" />
+</PreferenceScreen>

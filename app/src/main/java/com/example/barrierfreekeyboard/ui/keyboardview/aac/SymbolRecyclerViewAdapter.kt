@@ -1,19 +1,21 @@
 package com.example.barrierfreekeyboard.ui.keyboardview.aac
 
 import android.content.Context
-import android.hardware.display.DisplayManager
-import android.util.DisplayMetrics
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputConnection
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.model.AACSymbol
-import timber.log.Timber
 import java.io.File
 
-class SymbolRecyclerViewAdapter(val context: Context, val aacList: ArrayList<AACSymbol>, val inputConnection: InputConnection): RecyclerView.Adapter<SymbolRecyclerViewAdapter.SymbolRecyclerViewHolder>() {
+class SymbolRecyclerViewAdapter(
+    val context: Context,
+    val aacList: ArrayList<AACSymbol>,
+    val inputConnection: InputConnection?): RecyclerView.Adapter<SymbolRecyclerViewAdapter.SymbolRecyclerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymbolRecyclerViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.aac_symbol_item, parent, false)
@@ -36,7 +38,7 @@ class SymbolRecyclerViewAdapter(val context: Context, val aacList: ArrayList<AAC
                 .load(File(aacSymbol.imageURI))
                 .into(imageView!!)
             imageView.setOnClickListener{
-                inputConnection.commitText(aacSymbol.text, 1)
+                inputConnection?.commitText(aacSymbol.text, 1)
             }
         }
     }

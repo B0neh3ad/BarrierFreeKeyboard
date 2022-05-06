@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        app:key="keyboard_use_num_pad"
+        app:icon="@drawable/ic_baseline_widgets_24"
+        app:defaultValue="true"
+        app:title="숫자키"
+        app:summary="키보드 위에 숫자키를 추가합니다. (기본값 : ON)" />
+
+    <SeekBarPreference
+        app:key="keyboardHeight"
+        app:icon="@drawable/ic_baseline_height_24"
+        app:min="200"
+        android:max="600"
+        app:defaultValue="300"
+        app:title="키보드의 높이"
+        app:summary="키보드의 높이를 설정합니다. (기본값 : 300)"
+        app:showSeekBarValue="true" />
+
+    <SeekBarPreference
+        app:key="keyboardSound"
+        app:icon="@drawable/ic_baseline_volume_up_24"
+        app:min="-1"
+        android:max="10"
+        app:defaultValue="-1"
+        app:title="터치 소리"
+        app:summary="키보드의 터치 소리 크기를 설정합니다. (기본값 : -1)"
+        app:showSeekBarValue="true" />
+
+    <SeekBarPreference
+        app:key="keyboardVibrate"
+        app:icon="@drawable/ic_baseline_vibration_24"
+        app:min="-1"
+        android:max="10"
+        app:defaultValue="-1"
+        app:title="터치 진동"
+        app:summary="키보드의 터치 진동 크기를 설정합니다. (기본값 : -1)"
+        app:showSeekBarValue="true" />
+
+    <SeekBarPreference
+        app:key="keyboardInitialInterval"
+        app:icon="@drawable/ic_baseline_repeat_one_24"
+        app:min="100"
+        android:max="500"
+        app:defaultValue="350"
+        app:title="시작 반복 간격"
+        app:summary="첫 터치에 의한 입력 후 다음 터치까지 간격의 길이를 설정합니다. (기본값 : 350)"
+        app:showSeekBarValue="true" />
+
+    <SeekBarPreference
+        app:key="keyboardNormalInterval"
+        app:icon="@drawable/ic_baseline_repeat_one_24"
+        app:min="10"
+        android:max="300"
+        app:defaultValue="100"
+        app:title="기본 반복 간격"
+        app:summary="시작 간격 이후의 모든 간격의 길이를 설정합니다. (기본값 : 100)"
+        app:showSeekBarValue="true" />
+
+    <Preference
+        app:key="reset_settings"
+        app:icon="@drawable/ic_baseline_refresh_24"
+        app:title="설정 초기화"
+        app:summary="설정을 초기화 합니다" />
+</PreferenceScreen>

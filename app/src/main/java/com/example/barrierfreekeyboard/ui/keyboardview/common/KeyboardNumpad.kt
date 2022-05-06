@@ -1,79 +1,70 @@
 package com.example.barrierfreekeyboard.ui.keyboardview.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
-import android.media.AudioManager
-import android.os.*
+import android.graphics.Color
+import android.os.SystemClock
 import android.view.KeyEvent
-import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.children
-import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
-import com.example.barrierfreekeyboard.ui.MainActivity
 import com.example.barrierfreekeyboard.R
+import com.example.barrierfreekeyboard.databinding.KeyboardNumpadBinding
 import com.example.barrierfreekeyboard.ui.KeyboardConstants
+import com.example.barrierfreekeyboard.ui.KeyboardInteractionListener
+import com.example.barrierfreekeyboard.ui.KeyboardService
+import com.example.barrierfreekeyboard.ui.PrefKeys
 import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
+import com.example.barrierfreekeyboard.ui.keyline.KeyLine
+import com.example.barrierfreekeyboard.ui.keyline.Numpad
+import timber.log.Timber
 
 class KeyboardNumpad(
     context: Context,
-    layoutInflater: LayoutInflater,
     keyboardInteractionListener: KeyboardInteractionListener
-) : Keyboard(context, layoutInflater, keyboardInteractionListener) {
+) : Keyboard<KeyboardNumpadBinding>(context, keyboardInteractionListener) {
 
-    lateinit var numpadLayout: LinearLayout
-    lateinit var inputConnection: InputConnection
+    private var maxLineRange = 0 until 4
 
-    var buttons: MutableList<Button> = mutableListOf<Button>()
-    private val keysText = listOf(
-        listOf("1", "2", "3", "DEL"),
-        listOf("4", "5", "6", "Enter"),
-        listOf("7", "8", "9", "."),
-        listOf("-", "0", ",", "")
-    )
-    private val myKeysText = ArrayList<List<String>>()
-    private val layoutLines = ArrayList<LinearLayout>()
+    private var downView: View? = null
 
-    lateinit var vibrator: Vibrator
+    private var buttons: MutableList<Button> = mutableListOf()
+    private var layoutLines: MutableList<LinearLayout> = mutableListOf()
+
+    private val keys = Numpad()
 
     override fun init() {
-        numpadLayout = layoutInflater.inflate(R.layout.keyboard_numpad, null) as LinearLayout
-        vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val vibratorManager =
-                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-            vibratorManager.defaultVibrator
-        } else {
-            context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        }
+        Timber.d(this.javaClass.simpleName + ":init")
+        keyboardLayout = KeyboardNumpadBinding.inflate(layoutInflater)
 
-        val sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE)
-        val height = sharedPreferences.getInt("keyboardHeight", 150)
-        val config = context.resources.configuration
+        height = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        sound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
+        vibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
+        initialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
+        normalInterval = preference.getInt(PrefKeys.KB_NORMAL_INTERVAL, KeyboardConstants.KB_DEFAULT_NORMAL_INTERVAL)
 
         val lines = arrayOfNulls<LinearLayout>(4)
         val lineViewsId =
             listOf(R.id.first_line, R.id.second_line, R.id.third_line, R.id.fourth_line)
         // init LinearLayout in each line
         for (i in lines.indices) {
-            lines[i] = numpadLayout.findViewById(lineViewsId[i])
+            lines[i] = keyboardLayout.root.findViewById(lineViewsId[i])
         }
 
         // Set height in both landscape and portrait
-        var heightRate =
+        val heightRate =
             if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.7 else 1.0
         for (i in lines.indices) {
             lines[i]!!.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 (height * heightRate).toInt()
             )
-        }
-
-        // init key text
-        myKeysText.clear()
-        for (i in keysText.indices) {
-            myKeysText.add(keysText[i])
         }
 
         // init layoutLines
@@ -85,75 +76,144 @@ class KeyboardNumpad(
         setLayoutComponents()
     }
 
-    override fun getLayout(): LinearLayout {
-        return numpadLayout
-    }
+    override fun onKeyboardUpdate(event: Event) {
+        if (event == Event.CLOSE) return
+        val changedUseNumPad = preference.getBoolean(PrefKeys.KB_USE_NUM_PAD, KeyboardConstants.KB_DEFAULT_USE_NUMPAD)
+        val changedHeight = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        val changedSound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
+        val changedVibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
+        val changedInitialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
+        val changedNormalInterval = preference.getInt(PrefKeys.KB_NORMAL_INTERVAL, KeyboardConstants.KB_DEFAULT_NORMAL_INTERVAL)
 
-    /** 딸깍 소리 발생 **/
-    private fun playClick(i: Int) {
-        val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager?
-        when (i) {
-            KeyboardConstants.SPACEBAR -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR)
-            KeyboardConstants.KEYCODE_DONE, KeyboardConstants.KEYCODE_LF -> am!!.playSoundEffect(
-                AudioManager.FX_KEYPRESS_RETURN
-            )
-            KeyboardConstants.KEYCODE_DELETE -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE)
-            else -> am!!.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, (-1).toFloat())
+        var changed = false
+        if (height != changedHeight) {
+            changed = true
+            height = changedHeight
+        }
+        if (sound != changedSound) {
+            changed = true
+            sound = changedSound
+        }
+        if (vibrate != changedVibrate) {
+            changed = true
+            vibrate = changedVibrate
+        }
+        if (initialInterval != changedInitialInterval) {
+            changed = true
+            initialInterval = changedInitialInterval
+        }
+        if (normalInterval != changedNormalInterval) {
+            changed = true
+            normalInterval = changedNormalInterval
+        }
+
+        if (changed) {
+            val maxLine = if (changedUseNumPad) 5 else 4
+            maxLineRange = 0 until maxLine
+
+            buttons.clear()
+            layoutLines.clear()
+            downView = null
+            keyboardLayout.root.removeAllViews()
+            init()
+            KeyboardService.modeNotChange = true
+            keyboardInteractionListener.modechange(KeyboardService.lastMode)
+            KeyboardService.modeNotChange = false
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setLayoutComponents() {
-        val sharedPreferences = context.getSharedPreferences("setting", Context.MODE_PRIVATE)
-        val sound = sharedPreferences.getInt("keyboardSound", -1)
-        val vibrate = sharedPreferences.getInt("keyboardVibrate", -1)
-
-        for (line in layoutLines.indices) {
-            val children = layoutLines[line].children.toList()
-            val myText = myKeysText[line]
-            for (item in children.indices) {
-                val actionButton = children[item].findViewById<Button>(R.id.key_button)
-                actionButton.text = myText[item]
+        for((idx, line) in keys.withIndex()){
+            val children = layoutLines[idx].children.toList()
+            for((childIdx, item) in line.withIndex()){
+                val actionButton = children[childIdx].findViewById<Button>(R.id.key_button)
+                val specialKey = children[childIdx].findViewById<ImageView>(R.id.special_key)
+                specialKey.isClickable = false
+                specialKey.isFocusable = false
+                actionButton.text = item.normal
 
                 buttons.add(actionButton)
 
-                val clickListener = (View.OnClickListener {
-                    if (vibrate > 0) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            vibrator.vibrate(VibrationEffect.createOneShot(70, vibrate))
-                        } else {
-                            vibrator.vibrate(70)
-                        }
+                when(item.normal.uppercase()){
+                    "DEL" -> {
+                        specialKey.setImageResource(R.drawable.del)
+                        specialKey.visibility = View.VISIBLE
+                        actionButton.setTextColor(Color.TRANSPARENT)
                     }
+                }
 
-                    when (actionButton.text.toString()) {
-                        "DEL" -> {
-                            inputConnection.deleteSurroundingText(1, 0)
+                val handlerRunnable = object: Runnable {
+                    override fun run() {
+                        handler.postDelayed(this, normalInterval.toLong())
+                        onKeyRepeatEvent(downView, item)
+                    }
+                }
+
+                actionButton.setOnClickListener { onKeyClickEvent(it, item) }
+                actionButton.setOnLongClickListener { onKeyLongClickEvent(it, item) }
+                actionButton.setOnTouchListener { v, event ->
+                    when(event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            handler.removeCallbacks(handlerRunnable)
+                            handler.postDelayed(handlerRunnable, initialInterval.toLong())
+                            downView = v
+                            v.background = AppCompatResources.getDrawable(context, R.drawable.pressed)
                         }
-                        "Enter" -> {
-                            val eventTime = SystemClock.uptimeMillis()
-                            inputConnection.sendKeyEvent(
-                                KeyEvent(
-                                    eventTime, eventTime,
-                                    KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 0, 0, 0, 0,
-                                    KeyEvent.FLAG_SOFT_KEYBOARD
-                                )
-                            )
-                            inputConnection.sendKeyEvent(
-                                KeyEvent(
-                                    SystemClock.uptimeMillis(), eventTime,
-                                    KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER, 0, 0, 0, 0,
-                                    KeyEvent.FLAG_SOFT_KEYBOARD
-                                )
-                            )
-                        }
-                        else -> {
-                            playClick(actionButton.text.toString().toCharArray()[0].code)
-                            inputConnection.commitText(actionButton.text, 1)
+                        MotionEvent.ACTION_UP,
+                        MotionEvent.ACTION_CANCEL -> {
+                            handler.removeCallbacks(handlerRunnable)
+                            downView = null
+                            v.background = AppCompatResources.getDrawable(context, R.drawable.normal)
                         }
                     }
-                })
-                actionButton.setOnClickListener(clickListener)
-                children[item].setOnClickListener(clickListener)
+                    onKeyTouchEvent(v, item, event)
+                }
+            }
+        }
+    }
+
+    override fun onInputConnectionReady(inputConnection: InputConnection) {}
+    override fun onKeyClickEvent(view: View?, key: KeyLine.Item) {
+        playVibrate()
+
+        when (key.normal.uppercase()) {
+            "DEL" -> {
+                inputConnection?.deleteSurroundingText(1, 0)
+            }
+            "ENTER" -> {
+                val eventTime = SystemClock.uptimeMillis()
+                inputConnection?.sendKeyEvent(
+                    KeyEvent(
+                        eventTime, eventTime,
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 0, 0, 0, 0,
+                        KeyEvent.FLAG_SOFT_KEYBOARD
+                    )
+                )
+                inputConnection?.sendKeyEvent(
+                    KeyEvent(
+                        SystemClock.uptimeMillis(), eventTime,
+                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER, 0, 0, 0, 0,
+                        KeyEvent.FLAG_SOFT_KEYBOARD
+                    )
+                )
+            }
+            else -> {
+                playClick(key.normal.toCharArray()[0].code)
+                inputConnection?.commitText(key.normal, 1)
+            }
+        }
+    }
+    override fun onKeyLongClickEvent(view: View?, key: KeyLine.Item): Boolean = true
+    override fun onKeyTouchEvent(
+        view: View?,
+        key: KeyLine.Item,
+        motionEvent: MotionEvent
+    ): Boolean = false
+    override fun onKeyRepeatEvent(view: View?, key: KeyLine.Item) {
+        when (key.normal.uppercase()) {
+            "DEL" -> {
+                inputConnection?.deleteSurroundingText(1, 0)
             }
         }
     }

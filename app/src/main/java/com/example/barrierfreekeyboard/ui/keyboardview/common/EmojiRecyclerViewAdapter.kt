@@ -9,7 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barrierfreekeyboard.R
 
-class EmojiRecyclerViewAdapter(val context: Context, val emojiList: ArrayList<String>, val inputConnection: InputConnection): RecyclerView.Adapter<EmojiRecyclerViewAdapter.EmojiRecyclerViewHolder>(){
+class EmojiRecyclerViewAdapter(
+    val context: Context,
+    val emojiList: ArrayList<String>,
+    val inputConnection: InputConnection?): RecyclerView.Adapter<EmojiRecyclerViewAdapter.EmojiRecyclerViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmojiRecyclerViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.emoji_item, parent, false)
@@ -17,7 +20,7 @@ class EmojiRecyclerViewAdapter(val context: Context, val emojiList: ArrayList<St
     }
 
     override fun onBindViewHolder(holder: EmojiRecyclerViewHolder, position: Int) {
-        holder.bind(emojiList[position], context)
+        holder.bind(emojiList[position])
     }
 
     override fun getItemCount(): Int {
@@ -27,10 +30,10 @@ class EmojiRecyclerViewAdapter(val context: Context, val emojiList: ArrayList<St
     inner class EmojiRecyclerViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
         private val textView = itemView?.findViewById<TextView>(R.id.emoji_text)
 
-        fun bind(emoji: String, context: Context) {
+        fun bind(emoji: String) {
             textView?.text = emoji
             textView?.setOnClickListener {
-                inputConnection.commitText((it as TextView).text.toString(), 1)
+                inputConnection?.commitText((it as TextView).text.toString(), 1)
             }
         }
     }

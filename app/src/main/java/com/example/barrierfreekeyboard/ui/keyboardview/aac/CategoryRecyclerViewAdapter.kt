@@ -12,9 +12,13 @@ import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.model.AACCategory
 import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import java.io.File
-import java.net.URI
 
-class CategoryRecyclerViewAdapter(val context: Context, val aacCategoryList: ArrayList<AACCategory>, val inputConnection: InputConnection, val height: Int, private val onClickListener: (String) -> (Unit)): RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryRecyclerViewHolder>()  {
+class CategoryRecyclerViewAdapter(
+    val context: Context,
+    val aacCategoryList: ArrayList<AACCategory>,
+    val inputConnection: InputConnection?,
+    val height: Int,
+    private val onClickListener: (String) -> (Unit)): RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryRecyclerViewHolder>()  {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

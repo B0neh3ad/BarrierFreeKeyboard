@@ -1,6 +1,5 @@
 package com.example.barrierfreekeyboard.repository
 
-import androidx.lifecycle.LiveData
 import com.example.barrierfreekeyboard.db.AACCategoryDao
 import com.example.barrierfreekeyboard.db.AACSymbolDao
 import com.example.barrierfreekeyboard.model.AACCategory

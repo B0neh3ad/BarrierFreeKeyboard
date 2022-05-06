@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="4"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- 카테고리 목록 -->
@@ -14,7 +13,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        tools:listitem="@layout/aac_category_item"/>
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:listitem="@layout/aac_category_item" />
 
     <!-- AAC 상징 목록 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        tools:listitem="@layout/aac_symbol_item"
-        >
-    </androidx.recyclerview.widget.RecyclerView>
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:listitem="@layout/aac_symbol_item"></androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

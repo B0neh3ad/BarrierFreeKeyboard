@@ -1,92 +1,101 @@
 package com.example.barrierfreekeyboard.ui
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.inputmethodservice.InputMethodService
-import android.net.Uri
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.core.content.edit
-import androidx.lifecycle.LifecycleCoroutineScope
-import com.example.barrierfreekeyboard.R
+import androidx.preference.PreferenceManager
+import com.example.barrierfreekeyboard.databinding.KeyboardViewBinding
 import com.example.barrierfreekeyboard.model.AACCategory
 import com.example.barrierfreekeyboard.model.AACSymbol
 import com.example.barrierfreekeyboard.repository.AACRepository
+import com.example.barrierfreekeyboard.ui.keyboardview.Keyboard
 import com.example.barrierfreekeyboard.ui.keyboardview.aac.KeyboardAAC
 import com.example.barrierfreekeyboard.ui.keyboardview.common.*
-import com.example.barrierfreekeyboard.ui.KeyboardConstants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.io.*
-import java.net.URI
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class KeyboardService: InputMethodService() {
+class KeyboardService: InputMethodService(), CoroutineScope {
 
-    lateinit var keyboardView: LinearLayout
-    lateinit var keyboardFrame: FrameLayout
-    lateinit var defaultButton: Button
-    lateinit var aacButton: Button
+    private lateinit var keyboardView: KeyboardViewBinding
 
-    lateinit var keyboardKorean: KeyboardKorean
-    lateinit var keyboardEnglish: KeyboardEnglish
-    lateinit var keyboardSymbols: KeyboardSymbols
-    lateinit var keyboardEmoji: KeyboardEmoji
-    lateinit var keyboardNumpad: KeyboardNumpad
-    lateinit var keyboardAAC: KeyboardAAC
+    private lateinit var keyboardKorean: KeyboardKorean
+    private lateinit var keyboardEnglish: KeyboardEnglish
+    private lateinit var keyboardSymbols: KeyboardSymbols
+    private lateinit var keyboardEmoji: KeyboardEmoji
+    private lateinit var keyboardNumpad: KeyboardNumpad
+    private lateinit var keyboardAAC: KeyboardAAC
 
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
-    var lastMode = KeyboardConstants.KB_KOR
-    var isAAC = 0
-    var isQwerty = 0
+    companion object {
+        var isAAC = 0
+        var isQwerty = 0
+        var modeNotChange = false
+        var lastMode = KeyboardConstants.KB_KOR
+        var currentMode = KeyboardConstants.KB_KOR
+        set(value) {
+            if (modeNotChange) return
+            if (value != field) lastMode = field
+            field = value
+            if (value == KeyboardConstants.KB_AAC) isAAC = 1
+        }
+    }
 
-    val keyboardInteractionListener = object: KeyboardInteractionListener {
+    private val keyboardInteractionListener = object: KeyboardInteractionListener {
         // TODO: inputconnection == null인 경우 처리
         override fun modechange(mode: Int) {
+            val keyboardFrame = keyboardView.keyboardFrame
             currentInputConnection.finishComposingText()
             keyboardFrame.removeAllViews()
-            when(mode){
+            when(mode) {
                 KeyboardConstants.KB_ENG -> {
                     // Qwerty
-                    lastMode = mode
+                    currentMode = mode
                     keyboardEnglish.inputConnection = currentInputConnection
-                    keyboardFrame.addView(keyboardEnglish.getLayout())
+                    keyboardFrame.addView(keyboardEnglish.layout)
+                    keyboardEnglish.onKeyboardChanged(lastMode, currentMode)
                 }
                 KeyboardConstants.KB_KOR -> {
                     if(isQwerty == 0){
                         // Qwerty
-                        lastMode = mode
+                        currentMode = mode
                         keyboardKorean.inputConnection = currentInputConnection
-                        keyboardFrame.addView(keyboardKorean.getLayout())
+                        keyboardFrame.addView(keyboardKorean.layout)
+                        keyboardKorean.onKeyboardChanged(lastMode, currentMode)
                     }
                     else {
                         // 천지인 등..
                     }
                 }
                 KeyboardConstants.KB_SYM -> {
-                    lastMode = mode
+                    currentMode = mode
                     keyboardSymbols.inputConnection = currentInputConnection
-                    keyboardFrame.addView(keyboardSymbols.getLayout())
+                    keyboardFrame.addView(keyboardSymbols.layout)
+                    keyboardSymbols.onKeyboardChanged(lastMode, currentMode)
                 }
                 KeyboardConstants.KB_EMO -> {
-                    lastMode = mode
+                    currentMode = mode
                     keyboardEmoji.inputConnection = currentInputConnection
-                    keyboardFrame.addView(keyboardEmoji.getLayout())
+                    keyboardFrame.addView(keyboardEmoji.layout)
+                    keyboardEmoji.onKeyboardChanged(lastMode, currentMode)
                 }
                 KeyboardConstants.KB_NUM -> {
-                    lastMode = mode
+                    currentMode = mode
                     keyboardNumpad.inputConnection = currentInputConnection
-                    keyboardFrame.addView(keyboardNumpad.getLayout())
+                    keyboardFrame.addView(keyboardNumpad.layout)
+                    keyboardNumpad.onKeyboardChanged(lastMode, currentMode)
                 }
                 KeyboardConstants.KB_AAC -> {
                     keyboardAAC.inputConnection = currentInputConnection
-                    keyboardFrame.addView(keyboardAAC.getLayout())
+                    keyboardFrame.addView(keyboardAAC.layout)
+                    keyboardAAC.onKeyboardChanged(lastMode, currentMode)
                 }
             }
         }
@@ -98,27 +107,27 @@ class KeyboardService: InputMethodService() {
     var aacCategoryList = arrayListOf<AACCategory>()
     var aacSymbolList = arrayListOf<ArrayList<AACSymbol>>()
 
+    override val coroutineContext: CoroutineContext
+        get() = SupervisorJob() + Dispatchers.Default
+
     override fun onCreate() {
         Timber.d("onCreate")
         super.onCreate()
-        keyboardView = layoutInflater.inflate(R.layout.keyboard_view, null) as LinearLayout
-        sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE)
-        keyboardFrame = keyboardView.findViewById(R.id.keyboard_frame)
-        defaultButton = keyboardView.findViewById(R.id.button_default)
-        aacButton = keyboardView.findViewById(R.id.button_aac)
+        keyboardView = KeyboardViewBinding.inflate(layoutInflater)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        defaultButton.setOnClickListener{
-            keyboardInteractionListener.modechange(lastMode)
+        keyboardView.buttonDefault.setOnClickListener{
+            keyboardInteractionListener.modechange(currentMode)
         }
 
-        aacButton.setOnClickListener{
+        keyboardView.buttonAac.setOnClickListener{
             keyboardInteractionListener.modechange(KeyboardConstants.KB_AAC)
         }
 
         val dbInitFlag = sharedPreferences.getBoolean("dbInitFlag", false)
         Timber.d("$dbInitFlag")
 
-        GlobalScope.launch(Dispatchers.IO) {
+        launch(Dispatchers.IO) {
             // 사진 복사 및 DB 초기화(비동기 실행)
             if(!dbInitFlag){
                 sharedPreferences.edit {
@@ -148,10 +157,8 @@ class KeyboardService: InputMethodService() {
                         copyFile(inp, outp)
 
                         inp.close()
-                        inp = null
                         outp.flush()
                         outp.close()
-                        outp = null
 
                         // save file to DB
                         aacRepository.addCategory(AACCategory(categoryFile.substring(0, 4), outFile.absolutePath))
@@ -180,10 +187,8 @@ class KeyboardService: InputMethodService() {
                             copyFile(inp, outp)
 
                             inp.close()
-                            inp = null
                             outp.flush()
                             outp.close()
-                            outp = null
 
                             // save file to DB
                             aacRepository.addSymbol(AACSymbol(KeyboardConstants.SYMBOL_TEXT[categoryIdx][symbolFileIdx] + " ", category, outFile.absolutePath))
@@ -205,12 +210,12 @@ class KeyboardService: InputMethodService() {
     override fun onCreateInputView(): View {
         Timber.d("onCreateInputView")
 
-        keyboardKorean = KeyboardKorean(applicationContext, layoutInflater, keyboardInteractionListener)
-        keyboardEnglish = KeyboardEnglish(applicationContext, layoutInflater, keyboardInteractionListener)
-        keyboardSymbols = KeyboardSymbols(applicationContext, layoutInflater, keyboardInteractionListener)
-        keyboardEmoji = KeyboardEmoji(applicationContext, layoutInflater, keyboardInteractionListener)
-        keyboardNumpad = KeyboardNumpad(applicationContext, layoutInflater, keyboardInteractionListener)
-        keyboardAAC = KeyboardAAC(applicationContext, layoutInflater, keyboardInteractionListener, aacCategoryList, aacSymbolList)
+        keyboardKorean = KeyboardKorean(applicationContext, keyboardInteractionListener)
+        keyboardEnglish = KeyboardEnglish(applicationContext, keyboardInteractionListener)
+        keyboardSymbols = KeyboardSymbols(applicationContext, keyboardInteractionListener)
+        keyboardEmoji = KeyboardEmoji(applicationContext, keyboardInteractionListener)
+        keyboardNumpad = KeyboardNumpad(applicationContext, keyboardInteractionListener)
+        keyboardAAC = KeyboardAAC(applicationContext, keyboardInteractionListener, aacCategoryList, aacSymbolList)
 
         keyboardKorean.inputConnection = currentInputConnection
         keyboardEnglish.inputConnection = currentInputConnection
@@ -226,7 +231,39 @@ class KeyboardService: InputMethodService() {
         keyboardNumpad.init()
         keyboardAAC.init()
 
-        return keyboardView
+        return keyboardView.root
+    }
+
+    override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
+        super.onStartInputView(info, restarting)
+        keyboardKorean.onKeyboardUpdate(Keyboard.Event.OPEN)
+        keyboardEnglish.onKeyboardUpdate(Keyboard.Event.OPEN)
+        keyboardSymbols.onKeyboardUpdate(Keyboard.Event.OPEN)
+        keyboardEmoji.onKeyboardUpdate(Keyboard.Event.OPEN)
+        keyboardNumpad.onKeyboardUpdate(Keyboard.Event.OPEN)
+        keyboardAAC.onKeyboardUpdate(Keyboard.Event.OPEN)
+    }
+
+    override fun onFinishInputView(finishingInput: Boolean) {
+        super.onFinishInputView(finishingInput)
+        keyboardKorean.onKeyboardUpdate(Keyboard.Event.CLOSE)
+        keyboardEnglish.onKeyboardUpdate(Keyboard.Event.CLOSE)
+        keyboardSymbols.onKeyboardUpdate(Keyboard.Event.CLOSE)
+        keyboardEmoji.onKeyboardUpdate(Keyboard.Event.CLOSE)
+        keyboardNumpad.onKeyboardUpdate(Keyboard.Event.CLOSE)
+        keyboardAAC.onKeyboardUpdate(Keyboard.Event.CLOSE)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        keyboardKorean.destroyCoroutine()
+        keyboardEnglish.destroyCoroutine()
+        keyboardSymbols.destroyCoroutine()
+        keyboardEmoji.destroyCoroutine()
+        keyboardNumpad.destroyCoroutine()
+        keyboardAAC.destroyCoroutine()
+        coroutineContext.cancelChildren()
+        coroutineContext.cancel()
     }
 
     override fun updateInputViewShown() {
@@ -236,10 +273,10 @@ class KeyboardService: InputMethodService() {
         isQwerty = sharedPreferences.getInt("keyboardMode", 0)
         // 숫자 입력시 숫자패드로 전환
         if(currentInputEditorInfo.inputType == EditorInfo.TYPE_CLASS_NUMBER){
-            keyboardFrame.removeAllViews()
-            lastMode = KeyboardConstants.KB_NUM
+            keyboardView.keyboardFrame.removeAllViews()
+            currentMode = KeyboardConstants.KB_NUM
             keyboardNumpad.inputConnection = currentInputConnection
-            keyboardFrame.addView(keyboardNumpad.getLayout())
+            keyboardView.keyboardFrame.addView(keyboardNumpad.layout)
         }
         else{
             keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
