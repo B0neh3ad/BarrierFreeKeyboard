@@ -9,3 +9,6 @@ notion 링크: https://www.notion.so/AAC-39c7694083fb4eeeaddc00fa41602eb6
 + Layout: xml
 
 참고: https://in-idea.tistory.com/2?category=853918
+
+
+해야할 것: landscape 화면 만들기
