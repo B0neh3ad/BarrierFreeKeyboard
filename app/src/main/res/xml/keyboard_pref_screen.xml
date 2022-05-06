@@ -33,7 +33,7 @@
         app:key="keyboardVibrate"
         app:icon="@drawable/ic_baseline_vibration_24"
         app:min="-1"
-        android:max="10"
+        android:max="255"
         app:defaultValue="-1"
         app:title="터치 진동"
         app:summary="키보드의 터치 진동 크기를 설정합니다. (기본값 : -1)"
@@ -54,9 +54,9 @@
         app:icon="@drawable/ic_baseline_repeat_one_24"
         app:min="10"
         android:max="300"
-        app:defaultValue="100"
+        app:defaultValue="40"
         app:title="기본 반복 간격"
-        app:summary="시작 간격 이후의 모든 간격의 길이를 설정합니다. (기본값 : 100)"
+        app:summary="시작 간격 이후의 모든 간격의 길이를 설정합니다. (기본값 : 40)"
         app:showSeekBarValue="true" />
 
     <Preference

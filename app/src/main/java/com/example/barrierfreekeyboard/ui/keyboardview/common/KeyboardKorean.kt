@@ -391,6 +391,7 @@ class KeyboardKorean (
 
         playClick(insert.toCharArray()[0].code)
         try {
+            @Suppress("UNUSED_VARIABLE")
             val myText = Integer.parseInt(insert) // 이 라인은 일부러 에러를 내기 위한 라인입니다
             hangulMaker.directlyCommit()
             inputConnection?.commitText(insert, 1)
