@@ -10,13 +10,23 @@
         app:summary="키보드 위에 숫자키를 추가합니다. (기본값 : ON)" />
 
     <SeekBarPreference
-        app:key="keyboardHeight"
-        app:icon="@drawable/ic_baseline_height_24"
+        app:key="keyboardPortraitHeight"
+        app:icon="@drawable/ic_baseline_stay_current_portrait_24"
         app:min="200"
-        android:max="600"
+        android:max="650"
         app:defaultValue="350"
-        app:title="키보드의 높이"
-        app:summary="키보드의 높이를 설정합니다. (기본값 : 350)"
+        app:title="세로 화면 키보드 높이"
+        app:summary="세로 화면을때 키보드의 높이를 설정합니다. (기본값 : 350)"
+        app:showSeekBarValue="true" />
+
+    <SeekBarPreference
+        app:key="keyboardLandscapeHeight"
+        app:icon="@drawable/ic_baseline_stay_current_landscape_24"
+        app:min="50"
+        android:max="500"
+        app:defaultValue="200"
+        app:title="가로 화면 키보드 높이"
+        app:summary="가로 화면을때 키보드의 높이를 설정합니다. (기본값 : 200)"
         app:showSeekBarValue="true" />
 
     <SeekBarPreference

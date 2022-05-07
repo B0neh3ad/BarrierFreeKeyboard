@@ -1,6 +1,8 @@
 package com.example.barrierfreekeyboard.ui.keyboardview.common
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.view.MotionEvent
 import android.view.View
@@ -8,6 +10,7 @@ import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.children
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.barrierfreekeyboard.R
@@ -38,7 +41,11 @@ class KeyboardEmoji (
         Timber.d(this.javaClass.simpleName + ":init")
         keyboardLayout = KeyboardEmojiBinding.inflate(layoutInflater)
 
-        height = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        height = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            preference.getInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
+        } else {
+            preference.getInt(PrefKeys.KB_LANDSCAPE_HEIGHT, KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT)
+        }
         sound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
         vibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
         initialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
@@ -46,8 +53,10 @@ class KeyboardEmoji (
 
         setLayoutComponents()
         setRecyclerViewComponents(0x1F600, 79)
+        setRecyclerViewComponents(0x1F600, 79)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setLayoutComponents() {
         // Emoji Category Setting
         keyboardLayout.fourthLine.layoutParams =
@@ -57,9 +66,34 @@ class KeyboardEmoji (
             val actionButton = item.findViewById<Button>(R.id.key_button)
             val specialKey = item.findViewById<ImageView>(R.id.special_key)
             if(fourthLineText[idx] == "DEL"){
-                actionButton.setBackgroundResource(R.drawable.ic_backspace)
+                specialKey.setImageResource(R.drawable.ic_baseline_keyboard_backspace_24)
+                specialKey.visibility = View.VISIBLE
+                actionButton.visibility = View.GONE
                 val myOnClickListener = getDeleteAction()
-                actionButton.setOnClickListener(myOnClickListener)
+                specialKey.setOnClickListener(myOnClickListener)
+                val handlerRunnable = object: Runnable {
+                    override fun run() {
+                        handler.postDelayed(this, normalInterval.toLong())
+                        myOnClickListener.onClick(specialKey)
+                    }
+                }
+                specialKey.setOnTouchListener { v, event ->
+                    when(event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            handler.removeCallbacks(handlerRunnable)
+                            handler.postDelayed(handlerRunnable, initialInterval.toLong())
+                            actionButton.background = AppCompatResources.getDrawable(context, R.drawable.pressed)
+                            specialKey.background = AppCompatResources.getDrawable(context, R.drawable.pressed)
+                        }
+                        MotionEvent.ACTION_UP,
+                        MotionEvent.ACTION_CANCEL -> {
+                            handler.removeCallbacks(handlerRunnable)
+                            actionButton.background = AppCompatResources.getDrawable(context, R.drawable.normal)
+                            specialKey.background = AppCompatResources.getDrawable(context, R.drawable.normal)
+                        }
+                    }
+                    true
+                }
             }
             else{
                 actionButton.text = fourthLineText[idx]
@@ -141,7 +175,11 @@ class KeyboardEmoji (
     override fun onKeyboardUpdate(event: Event) {
         if (event == Event.CLOSE) return
         val changedUseNumPad = preference.getBoolean(PrefKeys.KB_USE_NUM_PAD, KeyboardConstants.KB_DEFAULT_USE_NUMPAD)
-        val changedHeight = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        val changedHeight = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            preference.getInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
+        } else {
+            preference.getInt(PrefKeys.KB_LANDSCAPE_HEIGHT, KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT)
+        }
         val changedSound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
         val changedVibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
         val changedInitialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)

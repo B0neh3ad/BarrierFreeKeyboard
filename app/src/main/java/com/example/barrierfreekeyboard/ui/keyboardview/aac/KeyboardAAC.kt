@@ -1,6 +1,7 @@
 package com.example.barrierfreekeyboard.ui.keyboardview.aac
 
 import android.content.Context
+import android.content.res.Configuration
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
@@ -39,7 +40,11 @@ class KeyboardAAC (
         Timber.d(this.javaClass.simpleName + ":init")
         keyboardLayout = KeyboardAacBinding.inflate(layoutInflater)
 
-        height = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        height = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            preference.getInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
+        } else {
+            preference.getInt(PrefKeys.KB_LANDSCAPE_HEIGHT, KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT)
+        }
         sound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
         vibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
         initialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
@@ -112,7 +117,11 @@ class KeyboardAAC (
     override fun onKeyboardUpdate(event: Event) {
         if (event == Event.CLOSE) return
         val changedUseNumPad = preference.getBoolean(PrefKeys.KB_USE_NUM_PAD, KeyboardConstants.KB_DEFAULT_USE_NUMPAD)
-        val changedHeight = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        val changedHeight = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            preference.getInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
+        } else {
+            preference.getInt(PrefKeys.KB_LANDSCAPE_HEIGHT, KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT)
+        }
         val changedSound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
         val changedVibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
         val changedInitialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)

@@ -51,7 +51,11 @@ class KeyboardSymbols(
         Timber.d(this.javaClass.simpleName + ":init")
         keyboardLayout = KeyboardDefaultBinding.inflate(layoutInflater)
 
-        height = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        height = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            preference.getInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
+        } else {
+            preference.getInt(PrefKeys.KB_LANDSCAPE_HEIGHT, KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT)
+        }
         sound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
         vibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
         initialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
@@ -64,6 +68,9 @@ class KeyboardSymbols(
             row.id = View.generateViewId()
             keyboardLayout.root.addView(row)
             layoutLines[i] = row
+        }
+        if (useNumPad) {
+            layoutLines[0]?.setPadding(0, (6f).toDips(), 0, (6f).toDips())
         }
 
         // Set height in both landscape and portrait
@@ -165,7 +172,11 @@ class KeyboardSymbols(
     override fun onKeyboardUpdate(event: Event) {
         if (event == Event.CLOSE) return
         val changedUseNumPad = preference.getBoolean(PrefKeys.KB_USE_NUM_PAD, KeyboardConstants.KB_DEFAULT_USE_NUMPAD)
-        val changedHeight = preference.getInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+        val changedHeight = if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            preference.getInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
+        } else {
+            preference.getInt(PrefKeys.KB_LANDSCAPE_HEIGHT, KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT)
+        }
         val changedSound = preference.getInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
         val changedVibrate = preference.getInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
         val changedInitialInterval = preference.getInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
@@ -244,14 +255,6 @@ class KeyboardSymbols(
                         actionButton.visibility = View.GONE
                         myKey.root.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.7f)
                     }
-                    "CAPS" -> {
-                        specialKey.setImageResource(R.drawable.ic_caps_unlock)
-                        specialKey.visibility = View.VISIBLE
-                        actionButton.visibility = View.GONE
-                        specialKey.setBackgroundResource(R.drawable.key_background)
-                        capsView = specialKey
-                        myKey.root.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.5f)
-                    }
                     "ENTER" -> {
                         specialKey.setImageResource(R.drawable.ic_baseline_keyboard_return_24)
                         specialKey.visibility = View.VISIBLE
@@ -269,6 +272,13 @@ class KeyboardSymbols(
                     }
                     "한/영" -> {
                         actionButton.text = item.normal
+                        buttons.add(actionButton)
+                    }
+                    "1/2",
+                    "2/2" -> {
+                        actionButton.text = item.normal
+                        myKey.root.layoutParams = LinearLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT, 1.5f)
+                        actionButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
                         buttons.add(actionButton)
                     }
                     else -> {
@@ -296,13 +306,15 @@ class KeyboardSymbols(
                             handler.removeCallbacks(handlerRunnable)
                             handler.postDelayed(handlerRunnable, initialInterval.toLong())
                             downView = v
-                            v.background = AppCompatResources.getDrawable(context, R.drawable.pressed)
+                            actionButton.background = AppCompatResources.getDrawable(context, R.drawable.pressed)
+                            specialKey.background = AppCompatResources.getDrawable(context, R.drawable.pressed)
                         }
                         MotionEvent.ACTION_UP,
                         MotionEvent.ACTION_CANCEL -> {
                             handler.removeCallbacks(handlerRunnable)
                             downView = null
-                            v.background = AppCompatResources.getDrawable(context, R.drawable.normal)
+                            actionButton.background = AppCompatResources.getDrawable(context, R.drawable.normal)
+                            specialKey.background = AppCompatResources.getDrawable(context, R.drawable.normal)
                         }
                     }
                     onKeyTouchEvent(v, item, event)
@@ -310,12 +322,15 @@ class KeyboardSymbols(
 
                 actionButton.setOnClickListener { onKeyClickEvent(it, item) }
                 specialKey.setOnClickListener { onKeyClickEvent(it, item) }
+                myKey.root.setOnClickListener { onKeyClickEvent(it, item) }
 
                 actionButton.setOnLongClickListener { onKeyLongClickEvent(it, item) }
                 specialKey.setOnLongClickListener { onKeyLongClickEvent(it, item) }
+                myKey.root.setOnLongClickListener { onKeyLongClickEvent(it, item) }
 
                 actionButton.setOnTouchListener(touchEvent)
                 specialKey.setOnTouchListener(touchEvent)
+                myKey.root.setOnTouchListener(touchEvent)
 
                 layoutLines[idx]?.addView(myKey.root)
             }

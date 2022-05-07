@@ -19,7 +19,7 @@ class KeyboardSettings : PreferenceFragmentCompat() {
             val preference = PreferenceManager.getDefaultSharedPreferences(requireContext())
             preference.edit {
                 putBoolean(PrefKeys.KB_USE_NUM_PAD, KeyboardConstants.KB_DEFAULT_USE_NUMPAD)
-                putInt(PrefKeys.KB_HEIGHT, KeyboardConstants.KB_DEFAULT_HEIGHT)
+                putInt(PrefKeys.KB_PORTRAIT_HEIGHT, KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT)
                 putInt(PrefKeys.KB_SOUND, KeyboardConstants.KB_DEFAULT_SOUND)
                 putInt(PrefKeys.KB_VIBRATE, KeyboardConstants.KB_DEFAULT_VIBRATE)
                 putInt(PrefKeys.KB_INITIAL_INTERVAL, KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL)
