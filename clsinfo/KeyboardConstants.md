@@ -10,7 +10,7 @@
 | **KB_DEFAULT_SOUND** | Int | 키보드를 클릭했을때의 소리의 크기 기본값입니다. | -1 |
 | **KB_DEFAULT_VIBRATE** | Int | 키보드를 클릭했을때의 진동의 크기 기본값입니다. | -1 |
 | **KB_DEFAULT_INITIAL_INTERVAL** | Int | 첫 터치에 의한 입력 후 다음 터치까지 간격의 길이의 기본값입니다. | 350 |
-| **KB_DEFAULT_NORMAL_INTERVAL** | Int | normalInterval 이후의 모든 간격의 길이의 기본값입니다. | 40 |
+| **KB_DEFAULT_NORMAL_INTERVAL** | Int | KB_DEFAULT_INITIAL_INTERVAL 이후의 모든 간격의 길이의 기본값입니다. | 40 |
 | **KB_ENG** | Int | 영어 키보드의 아이디 입니다. | 0 |
 | **KB_KOR** | Int | 한글 키보드의 아이디 입니다. | 1 |
 | **KB_SYM** | Int | 특수문자 키보드의 아이디 입니다. | 2 |
