@@ -68,4 +68,9 @@
         app:title="기본 반복 간격"
         app:summary="시작 간격 이후의 모든 간격의 길이를 설정합니다. (기본값 : 40)"
         app:showSeekBarValue="true" />
+
+    <Preference
+        android:key="reset_settings"
+        app:icon="@drawable/ic_baseline_refresh_24"
+        android:title="설정 초기화" />
 </PreferenceScreen>
