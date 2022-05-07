@@ -2,6 +2,6 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-        app:key="none"
+        app:key="wah"
         app:title="AAC 는 아직 설정을 지원하지 않음" />
 </PreferenceScreen>

@@ -24,6 +24,7 @@ import kotlin.coroutines.CoroutineContext
 class KeyboardService: InputMethodService(), CoroutineScope {
 
     private lateinit var keyboardView: KeyboardViewBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var keyboardKorean: KeyboardKorean
     private lateinit var keyboardEnglish: KeyboardEnglish
@@ -32,13 +33,20 @@ class KeyboardService: InputMethodService(), CoroutineScope {
     private lateinit var keyboardNumpad: KeyboardNumpad
     private lateinit var keyboardAAC: KeyboardAAC
 
-    private lateinit var sharedPreferences: SharedPreferences
-
     companion object {
+        @JvmStatic
+        var aacCategoryList = arrayListOf<AACCategory>()
+        @JvmStatic
+        var aacSymbolList = arrayListOf<ArrayList<AACSymbol>>()
+        @JvmStatic
         var isAAC = 0
+        @JvmStatic
         var isQwerty = 0
+        @JvmStatic
         var modeNotChange = false
+        @JvmStatic
         var lastMode = KeyboardConstants.KB_KOR
+        @JvmStatic
         var currentMode = KeyboardConstants.KB_KOR
         set(value) {
             if (modeNotChange) return
@@ -50,7 +58,7 @@ class KeyboardService: InputMethodService(), CoroutineScope {
 
     private val keyboardInteractionListener = object: KeyboardInteractionListener {
         // TODO: inputconnection == null인 경우 처리
-        override fun modechange(mode: Int) {
+        override fun modeChange(mode: Int) {
             val keyboardFrame = keyboardView.keyboardFrame
             currentInputConnection?.finishComposingText()
             keyboardFrame.removeAllViews()
@@ -104,9 +112,6 @@ class KeyboardService: InputMethodService(), CoroutineScope {
     @Inject
     lateinit var aacRepository: AACRepository
 
-    var aacCategoryList = arrayListOf<AACCategory>()
-    var aacSymbolList = arrayListOf<ArrayList<AACSymbol>>()
-
     override val coroutineContext: CoroutineContext
         get() = SupervisorJob() + Dispatchers.Default
 
@@ -117,11 +122,11 @@ class KeyboardService: InputMethodService(), CoroutineScope {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         keyboardView.buttonDefault.setOnClickListener{
-            keyboardInteractionListener.modechange(currentMode)
+            keyboardInteractionListener.modeChange(currentMode)
         }
 
         keyboardView.buttonAac.setOnClickListener{
-            keyboardInteractionListener.modechange(KeyboardConstants.KB_AAC)
+            keyboardInteractionListener.modeChange(KeyboardConstants.KB_AAC)
         }
 
         val dbInitFlag = sharedPreferences.getBoolean("dbInitFlag", false)
@@ -168,7 +173,7 @@ class KeyboardService: InputMethodService(), CoroutineScope {
                     for(categoryIdx in symbolFolderList!!.indices){
                         val category = symbolFolderList[categoryIdx]
                         val symbolList = assets.list("symbol/$category")
-                        
+
                         // folder existence check
                         val symbolOutPath = File("$outDir/symbol/$category")
                         if(!symbolOutPath.exists()){
@@ -279,12 +284,12 @@ class KeyboardService: InputMethodService(), CoroutineScope {
             keyboardView.keyboardFrame.addView(keyboardNumpad.layout)
         }
         else{
-            keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
+            keyboardInteractionListener.modeChange(KeyboardConstants.KB_KOR)
         }
     }
 
     private fun copyFile(inp: InputStream, outp: OutputStream) {
-        var buffer = ByteArray(1024)
+        val buffer = ByteArray(1024)
         var read: Int
         while(true){
             read = inp.read(buffer)

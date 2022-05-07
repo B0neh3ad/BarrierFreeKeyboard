@@ -161,7 +161,7 @@ class KeyboardAAC (
             keyboardLayout.root.removeAllViews()
             init()
             KeyboardService.modeNotChange = true
-            keyboardInteractionListener.modechange(KeyboardService.lastMode)
+            keyboardInteractionListener.modeChange(KeyboardService.lastMode)
             KeyboardService.modeNotChange = false
         }
     }

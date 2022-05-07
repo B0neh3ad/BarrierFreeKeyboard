@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:clipToPadding="false">
+    android:padding="16dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/guide"
@@ -15,6 +14,13 @@
 
         <include layout="@layout/main_keyboard_setting_card"/>
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="아직 가로화면은 제대로 지원하지 않습니다."
+        android:gravity="center" />
 
     <LinearLayout
         android:id="@+id/input_container"

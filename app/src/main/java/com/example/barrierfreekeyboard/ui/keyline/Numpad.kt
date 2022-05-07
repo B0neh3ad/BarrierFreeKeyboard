@@ -26,7 +26,7 @@ class Numpad: KeyLine.System {
                 Item("7"), Item("8"), Item("9"), Item("-", isSpecial = true)
             ),
             KeyLine(
-                Item("", isSpecial = true), Item("0"), Item(",", isSpecial = true), Item(",", isSpecial = true)
+                Item("", isSpecial = true), Item("0"), Item(",", isSpecial = true), Item(".", isSpecial = true)
             )
         )
     }

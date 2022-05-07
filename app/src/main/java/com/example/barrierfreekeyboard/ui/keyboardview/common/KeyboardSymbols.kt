@@ -126,7 +126,7 @@ class KeyboardSymbols(
             "ENTER" -> runEnterAction()
             "한/영" -> runChangeLangAction()
             "EXIT" -> runExitAction()
-            "\uD83D\uDE00" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_EMO)
+            "\uD83D\uDE00" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_EMO)
             else -> runNormalAction(key)
         }
     }
@@ -140,7 +140,7 @@ class KeyboardSymbols(
             "ENTER" -> runEnterAction()
             "한/영" -> runChangeLangAction()
             "EXIT" -> runExitAction()
-            "\uD83D\uDE00" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_EMO)
+            "\uD83D\uDE00" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_EMO)
             else -> runLongAction(key)
         }
         return true
@@ -221,7 +221,7 @@ class KeyboardSymbols(
             keyboardLayout.root.removeAllViews()
             init()
             KeyboardService.modeNotChange = true
-            keyboardInteractionListener.modechange(KeyboardService.lastMode)
+            keyboardInteractionListener.modeChange(KeyboardService.lastMode)
             KeyboardService.modeNotChange = false
         }
     }
@@ -432,14 +432,14 @@ class KeyboardSymbols(
     private fun runChangeLangAction() {
         when(val last = KeyboardService.lastMode) {
             KeyboardConstants.KB_ENG,
-            KeyboardConstants.KB_KOR -> keyboardInteractionListener.modechange(last)
-            else -> keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
+            KeyboardConstants.KB_KOR -> keyboardInteractionListener.modeChange(last)
+            else -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_KOR)
         }
         if (capsStatus == Caps.ON) modeChange()
     }
 
     private fun runExitAction() {
-        keyboardInteractionListener.modechange(KeyboardService.lastMode)
+        keyboardInteractionListener.modeChange(KeyboardService.lastMode)
         if (capsStatus == Caps.ON) modeChange()
     }
 }

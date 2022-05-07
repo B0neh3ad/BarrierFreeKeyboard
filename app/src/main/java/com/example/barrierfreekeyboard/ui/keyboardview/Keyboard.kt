@@ -19,6 +19,7 @@ import com.example.barrierfreekeyboard.ui.keyline.KeyLine
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
+@Suppress("MemberVisibilityCanBePrivate")
 abstract class Keyboard<T: ViewBinding>(
     protected var context: Context,
     protected var keyboardInteractionListener: KeyboardInteractionListener): CoroutineScope {
@@ -117,6 +118,7 @@ abstract class Keyboard<T: ViewBinding>(
                 vibrator.vibrate(VibrationEffect.createOneShot(KeyboardConstants.VIB_INT.toLong(), vibrate))
             }
             else {
+                @Suppress("DEPRECATION")
                 vibrator.vibrate(KeyboardConstants.VIB_INT.toLong())
             }
         }

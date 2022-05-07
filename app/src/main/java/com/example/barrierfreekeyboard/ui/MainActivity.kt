@@ -5,17 +5,17 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewTreeObserver
+import android.view.*
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.ScaleAnimation
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import com.example.barrierfreekeyboard.BuildConfig
 import com.example.barrierfreekeyboard.R
 import com.example.barrierfreekeyboard.databinding.ActivityMainBinding
@@ -48,6 +48,14 @@ class MainActivity : AppCompatActivity() {
         val appbar = AppBarBinding.bind(binding.root)
         setContentView(binding.root)
         setSupportActionBar(appbar.toolbar)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutMain.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = systemBars.bottom
+            }
+            return@setOnApplyWindowInsetsListener insets
+        }
 
         val card = MainKeyboardSettingCardBinding.bind(binding.root)
 

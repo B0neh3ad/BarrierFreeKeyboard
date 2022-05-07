@@ -100,7 +100,7 @@ class KeyboardEmoji (
                 actionButton.setOnClickListener {
                     when((it as Button).text){
                         "한/영" -> {
-                            keyboardInteractionListener.modechange(KeyboardConstants.KB_KOR)
+                            keyboardInteractionListener.modeChange(KeyboardConstants.KB_KOR)
                         }
                         getEmojiByUnicode(0x1F600) -> {
                             setRecyclerViewComponents(0x1F600, 79)
@@ -219,7 +219,7 @@ class KeyboardEmoji (
             keyboardLayout.root.removeAllViews()
             init()
             KeyboardService.modeNotChange = true
-            keyboardInteractionListener.modechange(KeyboardService.lastMode)
+            keyboardInteractionListener.modeChange(KeyboardService.lastMode)
             KeyboardService.modeNotChange = false
         }
     }

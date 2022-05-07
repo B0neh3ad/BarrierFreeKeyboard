@@ -96,9 +96,9 @@ class KeyboardKorean (
             "DEL" -> runDeleteAction()
             "CAPS" -> runCapsAction()
             "ENTER" -> runEnterAction()
-            "한/영" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_ENG)
-            "!#1" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_SYM)
-            "\uD83D\uDE00" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_EMO)
+            "한/영" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_ENG)
+            "!#1" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_SYM)
+            "\uD83D\uDE00" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_EMO)
             else -> runNormalAction(key)
         }
     }
@@ -109,9 +109,9 @@ class KeyboardKorean (
             "DEL" -> runDeleteAction()
             "CAPS" -> runCapsAction()
             "ENTER" -> runEnterAction()
-            "한/영" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_ENG)
-            "!#1" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_SYM)
-            "\uD83D\uDE00" -> keyboardInteractionListener.modechange(KeyboardConstants.KB_EMO)
+            "한/영" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_ENG)
+            "!#1" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_SYM)
+            "\uD83D\uDE00" -> keyboardInteractionListener.modeChange(KeyboardConstants.KB_EMO)
             else -> runLongAction(key)
         }
         return true
@@ -180,7 +180,7 @@ class KeyboardKorean (
             keyboardLayout.root.removeAllViews()
             init()
             KeyboardService.modeNotChange = true
-            keyboardInteractionListener.modechange(KeyboardService.lastMode)
+            keyboardInteractionListener.modeChange(KeyboardService.lastMode)
             KeyboardService.modeNotChange = false
         }
     }
