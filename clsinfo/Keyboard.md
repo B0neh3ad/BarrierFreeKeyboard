@@ -22,11 +22,11 @@ ClassName<**T** : ViewBinding>
 | **preference** | SharedPreferences | 설정을 가져옵니다 |
 | **audioManager** | AudioManager | 오디오 매니저 서비스를 가져옵니다 |
 | **keyboardLayout** | T | 키보드 레이아웃 뷰 바인딩을 가져옵니다 |
-| **height** | Int | 키보드의 높이를 가져옵니다 <br> 기본값:<br>KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT<br>KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT |
-| **sound** | Int | 소리의 크기를 가져옵니다 <br>기본값: KeyboardConstants.KB_DEFAULT_SOUND |
-| **vibrate** | Int | 진동의 크기를 가져옵니다 <br>기본값: KeyboardConstants.KB_DEFAULT_VIBRATE |
-| **initialInterval** | Int | 첫 터치에 의한 입력 후 다음 터치까지 간격의 길이를 설정합니다. <br>기본값 : KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL |
-| **normalInterval** | Int | normalInterval 이후의 모든 간격의 길이를 설정합니다. <br>기본값 : KeyboardConstants.KB_DEFAULT_NORMAL_INTERVAL |
+| **height** | Int | 키보드의 높이를 가져옵니다 <br> 기본값:<br>[KeyboardConstants.KB_DEFAULT_PORTRAIT_HEIGHT](KeyboardConstants.md)<br>[KeyboardConstants.KB_DEFAULT_LANDSCAPE_HEIGHT](KeyboardConstants.md) |
+| **sound** | Int | 소리의 크기를 가져옵니다 <br>기본값: [KeyboardConstants.KB_DEFAULT_SOUND](KeyboardConstants.md) |
+| **vibrate** | Int | 진동의 크기를 가져옵니다 <br>기본값: [KeyboardConstants.KB_DEFAULT_VIBRATE](KeyboardConstants.md) |
+| **initialInterval** | Int | 첫 터치에 의한 입력 후 다음 터치까지 간격의 길이를 설정합니다. <br>기본값 : [KeyboardConstants.KB_DEFAULT_INITIAL_INTERVAL](KeyboardConstants.md) |
+| **normalInterval** | Int | normalInterval 이후의 모든 간격의 길이를 설정합니다. <br>기본값 : [KeyboardConstants.KB_DEFAULT_NORMAL_INTERVAL](KeyboardConstants.md) |
 | **capsStatus** | Keyboard.Caps | 키보드의 Caps 상태를 가져옵니다. |
 
 

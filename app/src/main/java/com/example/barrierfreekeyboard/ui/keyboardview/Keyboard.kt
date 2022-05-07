@@ -19,7 +19,6 @@ import com.example.barrierfreekeyboard.ui.keyline.KeyLine
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-@Suppress("MemberVisibilityCanBePrivate")
 abstract class Keyboard<T: ViewBinding>(
     protected var context: Context,
     protected var keyboardInteractionListener: KeyboardInteractionListener): CoroutineScope {
