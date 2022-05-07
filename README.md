@@ -12,3 +12,5 @@ notion 링크: https://www.notion.so/AAC-39c7694083fb4eeeaddc00fa41602eb6
 
 
 해야할 것: landscape 화면 만들기
+
+[Keyboard](/clsinfo/Keyboard.md)
