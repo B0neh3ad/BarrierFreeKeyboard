@@ -22,6 +22,6 @@
 | **KEYCODE_LF** | Int | ? | 10 |
 | **KEYCODE_DONE** | Int | ? | -4 |
 | **KEYCODE_DELETE** | Int | ? | -5 |
-| **SYMBOL_PER_LINE** | Int | ? | 4 |
+| **SYMBOL_PER_LINE** | Int | AAC 키보드의 한 줄 당 나타나는 AAC 상징의 개수입니다. | 4 |
 | **PRELOAD_ITEM_COUNT** | Int | ? | 8 |
 | **SYMBOL_TEXT** | Int | AAC 키보드의 심볼 텍스트 값 입니다. | 너무 김 |
